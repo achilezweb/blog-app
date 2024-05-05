@@ -25,49 +25,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        //create CategorySeeder
-        $categories = [
-            'Category 1',
-            'Category 2',
-            'Category 3',
-            'Category 4',
-            'Category 5',
-            'Category 6',
-            'Category 7',
-            'Category 8',
-            'Category 9',
-            'UnCategorized',
-        ];
+        // Call the CategorySeeder
+        $this->call(CategorySeeder::class);
 
-        foreach ($categories as $category) {
-            Category::create(['name' => $category]);
-        }
+        // Call the TagSeeder
+        $this->call(TagSeeder::class);
 
-        //create TagSeeder
-        $tags = [
-            'Tags 1',
-            'Tags 2',
-            'Tags 3',
-            'Tags 4',
-            'UnTagged',
-        ];
-
-        foreach ($tags as $tag) {
-            Tag::create(['name' => $tag]);
-        }
-
-        //create PrivacySeeder
-        $privacies = [
-            'Public',
-            'Friends',
-            'Only Me',
-            'Custom',
-            'Others',
-        ];
-
-        foreach ($privacies as $privacy) {
-            Privacy::create(['name' => $privacy]);
-        }
+        // Call the PrivacySeeder
+        $this->call(PrivacySeeder::class);
 
         //add post
         // Post::factory(10)->has(Comment::factory(15))->for($user)->create(); //create 10 post, 150 comments, 150users
