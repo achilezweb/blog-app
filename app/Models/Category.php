@@ -18,13 +18,23 @@ class Category extends Model
         'name',
     ];
 
+    // /**
+    //  * Get the post that owns the Category
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    //  */
+    // public function post(): BelongsTo
+    // {
+    //     return $this->belongsTo(Post::class); //$post = $category->post;?
+    // }
+
     /**
-     * Get the post that owns the Category
+     * Get all of the posts for the Category
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function post(): BelongsTo
+    public function posts(): HasMany
     {
-        return $this->belongsTo(Post::class); //$post = $category->post;
+        return $this->hasMany(Post::class); //$category->posts;
     }
 }

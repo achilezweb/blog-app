@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
         // Post::factory(10)->has(Comment::factory(15))->for($user)->create(); //create 10 post, 150 comments, 150users
         // Post::factory(10)->has(Comment::factory(15))->has(Tag::factory(3))->for($user)->create(); //create 10 post, 150 comments, 30 tags, 150users
         // Post::factory(10)->has(Comment::factory(15))->has(Category::factory(1))->has(Tag::factory(3))->for($user)->create(); //create 10 post, 150 comments, 10 categories, 30 tags, 150users
-        Post::factory(10)->has(Comment::factory(15))->for($user)->create(); //create 10 post, 150 comments, 0 categories, 0 tags, 0 privacy, 150users
+        Post::factory(30)->has(Comment::factory(15))->for($user)->create(); //create 30 post, 450 comments, 10 categories, 5 tags, 5 privacy, 451 users
 
 
 

@@ -37,7 +37,8 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        //
+        //owner: authorize update if the user->id is identical comment->user_id
+        return $user->id === $comment->user_id;
     }
 
     /**
@@ -45,7 +46,8 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        //
+        //owner: authorize delete if the user->id is identical comment->user_id
+        return $user->id === $comment->user_id;
     }
 
     /**

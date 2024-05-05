@@ -19,14 +19,18 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'title',
         'body',
         'slug',
         'active',
         'archive',
-        //'category_id',
-        //'privacy_id',
+        'category_id',
+        'tag_id',
+        'privacy_id',
     ];
+
+    // protected $guarded = ['id'];
 
     protected static function boot()
     {
@@ -68,14 +72,24 @@ class Post extends Model
         return $this->hasMany(Comment::class); //$comments = $post->comments;
     }
 
+    // /**
+    //  * Get all of the categories for the Post
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    //  */
+    // public function categories(): HasMany
+    // {
+    //     return $this->hasMany(Category::class); //$categories = $post->categories; //there should be post_id in categories
+    // }
+
     /**
-     * Get all of the categories for the Post
+     * Get the category that owns the Post
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function categories(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(Category::class); //$categories = $post->categories;
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -106,13 +120,11 @@ class Post extends Model
     public function html(): Attribute
     {
 
-        // return Attribute::get(fn () => str($this->body)->markdown()); or
+        // return Attribute::get(fn () => str($this->body)->markdown()); //or
         return new Attribute(
             get: fn () => str($this->body)->markdown(),
             // set: fn ($value) => $value,
-        );
-
-        //$html = $post->html;
+        ); //$html = $post->html;
     }
 
 
