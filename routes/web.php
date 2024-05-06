@@ -21,5 +21,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/posts/search', [PostController::class, 'search'])->name('posts.search');
 Route::resource('posts', PostController::class);
 Route::middleware('auth')->resource('posts.comments', CommentController::class);
