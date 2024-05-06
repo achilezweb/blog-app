@@ -15,9 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index', [
-            'posts' => Post::latest()->with('user')->with('category')->paginate(10),
-        ]);
+        $posts = Post::latest()->with('user')->with('category')->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -50,10 +49,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', [
-            'post' => $post,
-            'comments' => $post->comments()->latest()->with('user')->paginate(10),
-        ]);
+        $comments = $post->comments()->latest()->with('user')->paginate(10);
+        return view('posts.show', compact('post','comments'));
     }
 
     /**
@@ -63,10 +60,7 @@ class PostController extends Controller
     {
 
         Gate::authorize('update', $post); //handled by PostPolicy@update
-
-        return view('posts.edit', [
-            'post' => $post,
-        ]);
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -99,4 +93,20 @@ class PostController extends Controller
 
         return to_route('posts.index');
     }
+
+    public function search(Request $request){
+
+        $query = $request->input('query');
+
+        // Perform the search query
+        $posts = Post::where('title', 'like', "%$query%")
+                     ->orWhere('body', 'like', "%$query%")
+                     ->with('user')
+                     ->with('category')
+                     ->paginate(10);
+
+        return view('posts.index', compact('posts'));
+    }
+
+
 }

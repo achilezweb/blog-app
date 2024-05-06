@@ -8,7 +8,7 @@
         <h1 class="text-2xl font-semibold block text-white">Posts:</h1>
 
         @can('update', $post)
-            <form action="{{ route('posts.update', $post) }}" method="post">
+            <form action="{{ route('posts.update', $post) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" value="{{ $post->title }}">

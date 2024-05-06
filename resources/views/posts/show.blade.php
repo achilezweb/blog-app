@@ -17,7 +17,7 @@
         <h2 id="comments" class="font-semibold text-xl text-white leading-tight py-6">Comments:</h2>
 
         @auth
-            <form action="{{ route('posts.comments.store', $post) }}" method="post">
+            <form action="{{ route('posts.comments.store', $post) }}" method="POST">
                 @csrf
                 <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Comment"></textarea>
                 <x-primary-button type="submit">Add Comment</x-primary-button>
@@ -32,7 +32,7 @@
                     <span class="text-sm text-gray-600">{{ $comment->created_at->diffForHumans() }} by: {{ $comment->user->name }} </span>
 
                     @can('delete', $comment)
-                        <form action="{{ route('posts.comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="post">
+                        <form action="{{ route('posts.comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <x-danger-button type="submit">Delete Comment</x-danger-button>

@@ -8,7 +8,7 @@
         <h1 class="text-2xl font-semibold block text-white">Comments:</h1>
 
         @can('update', $comment)
-            <form action="{{ route('posts.comments.update', ['post' => $post, 'comment' => $comment]) }}" method="post">
+            <form action="{{ route('posts.comments.update', ['post' => $post, 'comment' => $comment]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description">{{ $comment->body }}</textarea>

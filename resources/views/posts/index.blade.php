@@ -5,10 +5,18 @@
         </h2>
     </x-slot>
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-semibold block text-white">Posts:</h1>
+        <h1 class="text-2xl font-semibold block text-white">Search:</h1>
+        @auth
+            <form action="{{ route('posts.search') }}" method="GET">
+                <input type="text" name="query" id="query" placeholder="Search...">
+                <x-primary-button type="submit">Seach</x-primary-button>
+            </form>
+        @endauth
+
+        <h1 class="text-2xl font-semibold block text-white py-6">Posts:</h1>
 
         @auth
-            <form action="{{ route('posts.store') }}" method="post">
+            <form action="{{ route('posts.store') }}" method="POST">
                 @csrf
                 <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title">
                 <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description"></textarea>
@@ -30,7 +38,7 @@
                     </span>
 
                     @can('delete', $post)
-                        <form action="{{ route('posts.destroy', ['post' => $post]) }}" method="post">
+                        <form action="{{ route('posts.destroy', ['post' => $post]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <x-danger-button type="submit">Delete Post</x-danger-button>
