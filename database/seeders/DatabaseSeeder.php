@@ -7,9 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Post;
 use App\Models\Comment;
-use App\Models\Tag;
-use App\Models\Category;
-use App\Models\Privacy;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +22,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Call the RoleSeeder
+        $this->call(RoleSeeder::class);
+
+        // Call the RoleUserSeeder
+        $this->call(RoleUserSeeder::class);
 
         // Call the CategorySeeder
         $this->call(CategorySeeder::class);

@@ -8,6 +8,17 @@ use Illuminate\Auth\Access\Response;
 
 class PostPolicy
 {
+
+    /**
+     * Determine whether the user can manage any models.
+     */
+    public function manage(User $user, Post $post)
+    {
+        //Authorize only if the user has the "admin" role on edit/delete logic
+        // Check if the user has the "admin" role
+        return $user->hasRole('admin'); //$this->authorize('manage', $post);
+    }
+
     /**
      * Determine whether the user can view any models.
      */

@@ -92,6 +92,61 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * The roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Check if the user has a role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    /**
+     * Assign a role to the user.
+     *
+     * @param string $role
+     * @return void
+     */
+    public function assignRole($role)
+    {
+        $this->roles()->syncWithoutDetaching(Role::where('name', $role)->first());
+    }
+
+    /**
+     * // Usage: Assigning a role to a user
+     * $user = User::find(1);
+     * $user->assignRole('admin');
+     *
+     * // Checking if a user has a role
+     * if ($user->hasRole('admin')) {
+     * // User has the 'admin' role
+     * }
+     *
+     * $user = User::find(1); //assigning role to users
+     * $role = Role::find(1);
+     * $user->roles()->attach($role);
+     *
+     * $user = User::find(1); //retrieve role for a user
+     * $roles = $user->roles;
+     *
+     * $role = Role::find(1); //retrieve users for a role
+     * $users = $role->users;
+     *
+     * $user->roles()->sync([1, 2, 3]); //sync the role for a user
+     *
+     * $user->roles()->detach($role); // remove a role from a user
+     */
+
+    /**
      * Get all of the posts for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
