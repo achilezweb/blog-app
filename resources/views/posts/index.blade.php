@@ -33,7 +33,7 @@
                     <a href="{{  route('posts.show', $post) }}" class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</a>
                     <p class="text-sm text-gray-400">{{ $post->body }}</p>
                     <span class="text-sm text-gray-600">
-                        Category ID: {{ $post->category->id }} | Category Name: {{ $post->category->name }} |
+                        Category ID: xxx | Category Name: yyy |
                         Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong>
                     </span>
 

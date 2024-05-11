@@ -25,8 +25,6 @@ return new class extends Migration
             $table->string('slug')->unique()->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('archive')->default(false);
-            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Tag::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Privacy::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

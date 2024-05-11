@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
@@ -25,8 +26,6 @@ class Post extends Model
         'slug',
         'active',
         'archive',
-        'category_id',
-        'tag_id',
         'privacy_id',
     ];
 
@@ -72,44 +71,34 @@ class Post extends Model
         return $this->hasMany(Comment::class); //$comments = $post->comments;
     }
 
-    // /**
-    //  * Get all of the categories for the Post
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\HasMany
-    //  */
-    // public function categories(): HasMany
-    // {
-    //     return $this->hasMany(Category::class); //$categories = $post->categories; //there should be post_id in categories
-    // }
+    /**
+     * The categories that belong to the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
 
     /**
-     * Get the category that owns the Post
+     * The tags that belong to the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    /**
+     * Get the privacy that owns the Post
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category(): BelongsTo
+    public function privacy(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    /**
-     * Get all of the tags for the Post
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tags(): HasMany
-    {
-        return $this->hasMany(Tag::class); //$tags = $post->tags;
-    }
-
-    /**
-     * Get all of the privacies for the Post
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function privacies(): HasMany
-    {
-        return $this->hasMany(Privacy::class); //$privacies = $post->privacies;
+        return $this->belongsTo(Privacy::class);
     }
 
     /**

@@ -38,6 +38,12 @@ class DatabaseSeeder extends Seeder
         // Call the PrivacySeeder
         $this->call(PrivacySeeder::class);
 
+        // Call the CategoryPostSeeder
+        $this->call(CategoryPostSeeder::class);
+
+        // Call the TagPostSeeder
+        $this->call(TagPostSeeder::class);
+
         //add post
         // Post::factory(10)->has(Comment::factory(15))->for($user)->create(); //create 10 post, 150 comments, 150users
         // Post::factory(10)->has(Comment::factory(15))->has(Tag::factory(3))->for($user)->create(); //create 10 post, 150 comments, 30 tags, 150users

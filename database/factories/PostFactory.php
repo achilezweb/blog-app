@@ -24,8 +24,8 @@ class PostFactory extends Factory
             'user_id' => User::factory(),
             'title' => $this->faker->sentence,
             'body' => $this->faker->paragraph,
-            'category_id' => Category::inRandomOrder()->first()->id,
-            'tag_id' => Tag::inRandomOrder()->first()->id,
+            // 'category_id' => Category::inRandomOrder()->first()->id,
+            // 'tag_id' => Tag::inRandomOrder()->first()->id,
             'privacy_id' => Privacy::inRandomOrder()->first()->id,
         ];
     }

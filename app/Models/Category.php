@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -18,23 +19,14 @@ class Category extends Model
         'name',
     ];
 
-    // /**
-    //  * Get the post that owns the Category
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-    //  */
-    // public function post(): BelongsTo
-    // {
-    //     return $this->belongsTo(Post::class); //$post = $category->post;?
-    // }
-
     /**
-     * Get all of the posts for the Category
+     * The posts that belong to the Category
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function posts(): HasMany
+    public function posts(): BelongsToMany
     {
-        return $this->hasMany(Post::class); //$category->posts;
+        return $this->belongsToMany(Post::class);
     }
+
 }
