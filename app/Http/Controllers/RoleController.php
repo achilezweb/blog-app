@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -13,7 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        //Gate?
+        $roles = Role::all();
+        return view('roles.index', compact('roles'));
     }
 
     /**
@@ -21,15 +24,22 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        //Gate?
+        return view('roles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request)
     {
-        //
+        //Gate?
+        // Validate request
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:200'],
+        ]);
+        Role::create([...$data]);
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
     /**
@@ -37,7 +47,8 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        //Gate?
+        return view('roles.show', compact('role'));
     }
 
     /**
@@ -45,15 +56,24 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        //Gate::authorize('update', $role);// Validate request
+        return view('roles.edit', compact('role'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(Request $request, Role $role)
     {
-        //
+        //Gate::authorize('update', $role);// Validate request
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:200'],
+            'description' => ['string', 'max:200'],
+        ]);
+
+        $role->update([...$data]);
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
     /**
@@ -61,6 +81,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        //Gate::authorize('delete', $role);// Validate request
+
+        $role->delete();
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

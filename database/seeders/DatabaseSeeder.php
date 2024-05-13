@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Role;
 
 
 class DatabaseSeeder extends Seeder
@@ -18,16 +19,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $user = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
         // Call the RoleSeeder
         $this->call(RoleSeeder::class);
-
-        // Call the RoleUserSeeder
-        $this->call(RoleUserSeeder::class);
 
         // Call the CategorySeeder
         $this->call(CategorySeeder::class);
@@ -38,11 +31,21 @@ class DatabaseSeeder extends Seeder
         // Call the PrivacySeeder
         $this->call(PrivacySeeder::class);
 
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+        $roles = Role::inRandomOrder()->first()->id;
+        $user->roles()->attach($roles);
+
+        // Call the RoleUserSeeder
+        $this->call(RoleUserSeeder::class);
+
         // Call the CategoryPostSeeder
-        $this->call(CategoryPostSeeder::class);
+        // $this->call(CategoryPostSeeder::class);
 
         // Call the TagPostSeeder
-        $this->call(TagPostSeeder::class);
+        // $this->call(TagPostSeeder::class);
 
         //add post
         // Post::factory(10)->has(Comment::factory(15))->for($user)->create(); //create 10 post, 150 comments, 150users

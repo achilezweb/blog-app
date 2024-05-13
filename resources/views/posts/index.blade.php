@@ -8,7 +8,10 @@
         <h1 class="text-2xl font-semibold block text-white">Search:</h1>
         @auth
             <form action="{{ route('posts.search') }}" method="GET">
-                <input type="text" name="query" id="query" placeholder="Search...">
+                <input type="text" name="query" id="query" placeholder="Search..." required>
+                @error('query')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
                 <x-primary-button type="submit">Seach</x-primary-button>
             </form>
         @endauth
@@ -18,8 +21,14 @@
         @auth
             <form action="{{ route('posts.store') }}" method="POST">
                 @csrf
-                <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title">
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description"></textarea>
+                <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" required autofocus>
+                @error('title')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required></textarea>
+                @error('body')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
                 <input type="hidden" name="category_id" id="category_id" value="1">
                 <input type="hidden" name="tag_id" id="tag_id" value="1">
                 <input type="hidden" name="privacy_id" id="privacy_id" value="1">

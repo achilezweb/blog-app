@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Pivot\RoleUser;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -96,7 +97,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        // return $this->belongsToMany(Role::class)->withTimestamps();
+        return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
 
     /**
@@ -105,9 +107,21 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param string $role
      * @return bool
      */
-    public function hasRole($role)
+    public function hasRoles($role)
     {
         return $this->roles()->where('name', $role)->exists();
+        //return (bool) $this->roles()->where('name', $role)->first();
+    }
+
+    /**
+     * Check if the user has any of the specified roles.
+     *
+     * @param array|string $roles
+     * @return bool
+     */
+    public function hasAnyRole(array $roles)
+    {
+        return $this->roles()->whereIn('name', $roles)->exists();
     }
 
     /**

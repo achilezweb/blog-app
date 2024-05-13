@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,5 +28,18 @@ Route::get('/posts/search', [PostController::class, 'search'])->name('posts.sear
 Route::resource('posts', PostController::class);
 Route::resource('posts.comments', CommentController::class)->middleware('auth');
 
-// Route::get('/role_user', [RoleUserController::class, 'index']);
-Route::resource('role_user', RoleUserController::class)->middleware('auth');
+// Route::resource('categories', CategoryController::class);
+Route::resource('categories', CategoryController::class)->middleware('auth');
+
+// Route::resource('categories', CategoryController::class);
+Route::resource('roles', RoleController::class)->middleware('auth');
+
+
+Route::resource('roleUsers', RoleUserController::class)
+    ->middleware(['auth','role:admin,superadmin'])
+    ->except(['destroy']);
+Route::delete('/roleUsers/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('roleUsers.destroy');
+
+

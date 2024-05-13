@@ -9,7 +9,7 @@
 
         <div class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</div>
         <span class="text-sm text-gray-600">
-            Category ID: {{ $post->category->id }} | Category Name: {{ $post->category->name }} |
+            Category ID: xxx | Category Name: yyy |
             Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }}
         </span>
         <p class="text-sm text-gray-400">{{ $post->body }}</p>
@@ -19,7 +19,10 @@
         @auth
             <form action="{{ route('posts.comments.store', $post) }}" method="POST">
                 @csrf
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Comment"></textarea>
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Comment" required></textarea>
+                @error('body')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
                 <x-primary-button type="submit">Add Comment</x-primary-button>
 
             </form>

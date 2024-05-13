@@ -97,13 +97,17 @@ class PostController extends Controller
 
     public function search(Request $request){
 
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
         $query = $request->input('query');
 
         // Perform the search query
         $posts = Post::where('title', 'like', "%$query%")
                      ->orWhere('body', 'like', "%$query%")
                      ->with('user')
-                     ->with('category')
+                     //->with('category')
                      ->paginate(10);
 
         return view('posts.index', compact('posts'));
