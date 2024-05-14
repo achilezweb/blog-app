@@ -32,10 +32,32 @@ class DatabaseSeeder extends Seeder
         $this->call(PrivacySeeder::class);
 
         $user = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Test Superadmin',
+            'email' => 'superadmin@example.com',
         ]);
-        $roles = Role::inRandomOrder()->first()->id;
+        $roles = Role::where('name', 'superadmin')->first()->id;
+        $user->roles()->attach($roles);
+
+        $user = User::factory()->create([
+            'name' => 'Test Adminsuper',
+            'email' => 'adminsuper@example.com',
+        ]);
+        $rolesSuper = Role::where('name', 'superadmin')->first()->id;
+        $rolesAdmin = Role::where('name', 'admin')->first()->id;
+        $user->roles()->syncWithoutDetaching([$rolesSuper, $rolesAdmin]);
+
+        $user = User::factory()->create([
+            'name' => 'Test Admin',
+            'email' => 'admin@example.com',
+        ]);
+        $roles = Role::where('name', 'admin')->first()->id;
+        $user->roles()->attach($roles);
+
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'user@example.com',
+        ]);
+        $roles = Role::where('name', 'user')->first()->id;
         $user->roles()->attach($roles);
 
         // Call the RoleUserSeeder

@@ -15,14 +15,15 @@
                         @method('PUT')
 
                         <div>
-                            <input type="text"name="name" id="name" class="block mt-1 w-full" placeholder="Enter Role Name" value="{{ $role->name }}" required autofocus>
+                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Role Name" value="{{ $role->name }}" required autofocus>
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                        </div>
-                        <div>
-                            <input type="text"name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" value="{{ $role->description }}" required autofocus>
 
+                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" value="{{ $role->description }}" >
+                            @error('description')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button type="submit">Update</x-primary-button>

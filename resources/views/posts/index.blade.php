@@ -6,15 +6,14 @@
     </x-slot>
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <h1 class="text-2xl font-semibold block text-white">Search:</h1>
-        @auth
-            <form action="{{ route('posts.search') }}" method="GET">
-                <input type="text" name="query" id="query" placeholder="Search..." required>
-                @error('query')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-                <x-primary-button type="submit">Seach</x-primary-button>
-            </form>
-        @endauth
+
+        <form action="{{ route('posts.search') }}" method="GET">
+            <input type="text" name="query" id="query" placeholder="Search..." required>
+            @error('query')
+                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+            <x-primary-button type="submit">Seach</x-primary-button>
+        </form>
 
         <h1 class="text-2xl font-semibold block text-white py-6">Posts:</h1>
 
@@ -60,11 +59,9 @@
             @endforeach
         </ul>
 
-
         <div class="text-xl font-semibold block text-white">
             Pagination: {{ $posts->links() }}
         </div>
-
 
     </div>
 </x-app-layout>

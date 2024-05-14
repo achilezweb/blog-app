@@ -77,6 +77,11 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="text-xl font-semibold block text-white">
+                Pagination: {{ $roles->links() }}
+            </div>
+
         </div>
     </div>
 </x-app-layout>

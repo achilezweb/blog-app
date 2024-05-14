@@ -19,7 +19,7 @@ class RoleUserController extends Controller
         // return view('role_user.index', compact('roleUserPivot'));
 
         //Gate?
-        $roleUsers = User::with('roles')->get(); // Fetch all users with their roles
+        $roleUsers = User::with('roles')->paginate(10); // Fetch all users with their roles
         return view('roleUsers.index', compact('roleUsers'));
     }
 
@@ -51,7 +51,7 @@ class RoleUserController extends Controller
             return back()->with('error', 'Admins cannot assign the superadmin role.');
         }
 
-        $user->roles()->attach($request->role_id);
+        $user->roles()->syncWithoutDetaching($request->role_id); //better to use syncWithoutDetaching instead of attach
 
         return redirect()->route('roleUsers.index')->with('success', 'RoleUser created successfully.');
     }

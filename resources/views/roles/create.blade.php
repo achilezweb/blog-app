@@ -14,16 +14,16 @@
                         @csrf
 
                         <div>
-                            <input type="text"name="name" id="name" class="block mt-1 w-full" placeholder="Enter Role Name" required autofocus>
+                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Role Name" required autofocus>
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
+
+                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" >
+                            @error('description')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <input type="text"name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" autofocus>
-                        @error('description')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
 
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button type="submit">Create</x-primary-button>

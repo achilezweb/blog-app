@@ -14,20 +14,21 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Category 1',
-            'Category 2',
-            'Category 3',
-            'Category 4',
-            'Category 5',
-            'Category 6',
-            'Category 7',
-            'Category 8',
-            'Category 9',
-            'UnCategorized',
+            ['name' => 'Category1', 'description' => 'Description for Category1'],
+            ['name' => 'Category2', 'description' => 'Description for Category2'],
+            ['name' => 'Category3', 'description' => 'Description for Category3'],
+            ['name' => 'Category4', 'description' => 'Description for Category4'],
+            ['name' => 'Category5', 'description' => 'Description for Category5'],
+            ['name' => 'Category6', 'description' => 'Description for Category6'],
+            ['name' => 'Category7', 'description' => 'Description for Category7'],
+            ['name' => 'Category8', 'description' => 'Description for Category8'],
+            ['name' => 'Category9', 'description' => 'Description for Category9'],
+            ['name' => 'Category10', 'description' => 'Description for Category10'],
+            ['name' => 'Uncategorized', 'description' => 'Description for Uncategorized'],
         ];
 
         foreach ($categories as $category) {
-            Category::create(['name' => $category]);
+            Category::create($category);
         }
     }
 }

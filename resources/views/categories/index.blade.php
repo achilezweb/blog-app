@@ -42,6 +42,9 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Name | <a href="{{ route('categories.create') }}">New Category</a>
                             </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Description
+                            </th>
                             <th scope="col" class="relative px-6 py-3">
                                 Edit
                             </th>
@@ -55,6 +58,9 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('categories.show', $category) }}" class="text-indigo-600 hover:text-indigo-900">{{ $category->name }}</a>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a href="{{ route('categories.show', $category) }}" class="text-indigo-600 hover:text-indigo-900">{{ $category->description }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <a href="{{ route('categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
@@ -71,6 +77,11 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="text-xl font-semibold block text-white">
+                Pagination: {{ $categories->links() }}
+            </div>
+
         </div>
     </div>
 </x-app-layout>

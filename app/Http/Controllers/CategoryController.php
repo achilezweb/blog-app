@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         //Gate?
-        $categories = Category::all();
+        $categories = Category::latest()->paginate(10);
         return view('categories.index', compact('categories'));
     }
 
@@ -37,6 +37,7 @@ class CategoryController extends Controller
         // Validate request
         $data = $request->validate([
             'name' => ['required', 'string', 'max:200'],
+            'description' => [],
         ]);
         Category::create([...$data]);
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -69,6 +70,7 @@ class CategoryController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:200'],
+            'description' => [],
         ]);
 
         $category->update([...$data]);
