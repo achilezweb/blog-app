@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\CategoryAuditLogController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,7 +37,16 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::resource('roleUsers', RoleUserController::class)->except(['destroy']);
     Route::delete('/roleUsers/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
         ->name('roleUsers.destroy');
+
+    Route::get('/categories/deleted', [CategoryController::class, 'showDeleted'])
+        ->name('categories.deleted');
+    Route::post('/categories/restore/{id}', [CategoryController::class, 'restore'])
+        ->name('categories.restore');
     Route::resource('categories', CategoryController::class);
+    Route::get('/category-audit-logs', [CategoryAuditLogController::class, 'index'])
+        ->name('category-audit-logs.index');
+
+
     Route::resource('roles', RoleController::class);
 
 });

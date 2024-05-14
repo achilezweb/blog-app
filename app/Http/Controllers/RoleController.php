@@ -37,7 +37,7 @@ class RoleController extends Controller
         // Validate request
         $data = $request->validate([
             'name' => ['required', 'string', 'max:200'],
-            'description' => [],
+            'description' => ['nullable', 'string'],
         ]);
         Role::create([...$data]);
         return redirect()->route('roles.index')->with('success', 'Role created successfully.');
@@ -70,7 +70,7 @@ class RoleController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:200'],
-            'description' => [],
+            'description' => ['nullable', 'string'],
         ]);
 
         $role->update([...$data]);

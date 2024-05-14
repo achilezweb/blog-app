@@ -4,6 +4,7 @@
             {{ __('Dashboard') }} |
             <a href="{{ route('posts.index') }}">{{ __('Posts') }}</a> |
             <a href="{{ route('categories.index') }} ">{{ __('Categories') }}</a> |
+            <a href="{{ route('category-audit-logs.index') }} ">{{ __('Category Audit Log') }}</a> |
             <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
             <a href="{{ route('roleUsers.index') }}">{{ __('Role Users') }}</a> |
             <a href="#">{{ __('Category Posts') }}</a> |

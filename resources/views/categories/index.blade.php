@@ -2,7 +2,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
+            <a href="{{ route('categories.index') }}">{{ __('Categories') }}</a> |
+            <a href="{{ route('categories.create') }}">New Category</a> |
+            <a href="{{ route('categories.deleted') }}">Deleted Categories</a>
         </h2>
     </x-slot>
 
@@ -40,10 +42,13 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name | <a href="{{ route('categories.create') }}">New Category</a>
+                                Name
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Description
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Last Activity By
                             </th>
                             <th scope="col" class="relative px-6 py-3">
                                 Edit
@@ -61,6 +66,15 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('categories.show', $category) }}" class="text-indigo-600 hover:text-indigo-900">{{ $category->description }}</a>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                    @if($category->lastUpdater)
+                                        {{ $category->lastUpdater->action }} by {{ $category->lastUpdater->updater->name }} on {{ $category->updated_at->format('M d, Y H:i') }}
+                                    @else
+                                        N/A
+                                    @endif
+
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <a href="{{ route('categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>

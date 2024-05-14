@@ -22,15 +22,6 @@ class DatabaseSeeder extends Seeder
         // Call the RoleSeeder
         $this->call(RoleSeeder::class);
 
-        // Call the CategorySeeder
-        $this->call(CategorySeeder::class);
-
-        // Call the TagSeeder
-        $this->call(TagSeeder::class);
-
-        // Call the PrivacySeeder
-        $this->call(PrivacySeeder::class);
-
         $user = User::factory()->create([
             'name' => 'Test Superadmin',
             'email' => 'superadmin@example.com',
@@ -59,6 +50,15 @@ class DatabaseSeeder extends Seeder
         ]);
         $roles = Role::where('name', 'user')->first()->id;
         $user->roles()->attach($roles);
+
+        // Call the CategorySeeder
+        $this->call(CategorySeeder::class);
+
+        // Call the TagSeeder
+        $this->call(TagSeeder::class);
+
+        // Call the PrivacySeeder
+        $this->call(PrivacySeeder::class);
 
         // Call the RoleUserSeeder
         $this->call(RoleUserSeeder::class);

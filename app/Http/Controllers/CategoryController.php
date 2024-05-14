@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\CategoryAuditLog;
 
 class CategoryController extends Controller
 {
@@ -37,7 +38,7 @@ class CategoryController extends Controller
         // Validate request
         $data = $request->validate([
             'name' => ['required', 'string', 'max:200'],
-            'description' => [],
+            'description' => ['nullable', 'string'],
         ]);
         Category::create([...$data]);
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -70,9 +71,8 @@ class CategoryController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:200'],
-            'description' => [],
+            'description' => ['nullable', 'string'],
         ]);
-
         $category->update([...$data]);
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
@@ -84,7 +84,25 @@ class CategoryController extends Controller
     {
         //Gate::authorize('delete', $category);// Validate request
 
+        // Delete related audit logs first not to have issues on CategoryAuditLog
+        CategoryAuditLog::where('category_id', $category->id)->delete();
+
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
+
+    public function showDeleted()
+    {
+        $categories = Category::onlyTrashed()->paginate(10);
+        return view('categories.deleted', compact('categories'));
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+
+        return redirect()->route('categories.deleted')->with('success', 'Category restored successfully.');
+    }
+
 }
