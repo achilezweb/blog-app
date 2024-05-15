@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tag extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +27,8 @@ class Tag extends Model
      */
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class);
+        // return $this->belongsToMany(Post::class)->using(TagPost::class);
+        return $this->belongsToMany(Post::class, 'tag_post');
     }
 
 }

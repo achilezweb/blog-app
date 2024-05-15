@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -17,7 +19,9 @@ class PostController extends Controller
     {
         // $posts = Post::latest()->with('user')->with('category')->paginate(10);
         $posts = Post::latest()->with('user')->paginate(10);
-        return view('posts.index', compact('posts'));
+        $tags = Tag::all(); // Fetch all tags
+        $categories = Category::all(); // Fetch all categories
+        return view('posts.index', compact('posts', 'tags', 'categories'));
     }
 
     /**
@@ -36,12 +40,18 @@ class PostController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:200'],
             'body' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'string'],
-            'tag_id' => ['required', 'string'],
+            'tags' => ['required', 'array'],
+            'tags.*' => ['exists:tags,id'],
+            'categories' => ['required', 'array'],
+            'categories.*' => ['exists:categories,id'],
+
             'privacy_id' => ['required', 'string'],
         ]);
 
-        Post::create([...$data, 'user_id' => $request->user()->id]);
+        $post = Post::create([...$data, 'user_id' => $request->user()->id]);
+        $post->tags()->sync($request->tags); //best compared to attach
+        $post->categories()->sync($request->categories); //best compared to attach
+
         return to_route('posts.index');
     }
 
@@ -59,9 +69,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-
         Gate::authorize('update', $post); //handled by PostPolicy@update
-        return view('posts.edit', compact('post'));
+        $tags = Tag::all(); // Fetch all tags
+        $categories = Category::all(); // Fetch all categories
+        return view('posts.edit', compact('post', 'tags', 'categories'));
     }
 
     /**
@@ -74,12 +85,17 @@ class PostController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:200'],
             'body' => ['required', 'string', 'max:255'],
-            // 'category_id' => ['required', 'string'],
-            // 'tag_id' => ['required', 'string'],
+            'tags' => ['required', 'array'],
+            'tags.*' => ['exists:tags,id'],
+            'categories' => ['required', 'array'],
+            'categories.*' => ['exists:categories,id'],
+
             // 'privacy_id' => ['required', 'string'],
         ]);
 
         $post->update([...$data, 'user_id' => $request->user()->id]);
+        $post->tags()->sync($request->tags); //best compared to attach
+        $post->categories()->sync($request->categories); //best compared to attach
         return to_route('posts.index');
     }
 
@@ -107,10 +123,11 @@ class PostController extends Controller
         $posts = Post::where('title', 'like', "%$query%")
                      ->orWhere('body', 'like', "%$query%")
                      ->with('user')
-                     //->with('category')
                      ->paginate(10);
 
-        return view('posts.index', compact('posts'));
+        $tags = Tag::all(); // Fetch all tags
+
+        return view('posts.index', compact('posts', 'tags'));
     }
 
 

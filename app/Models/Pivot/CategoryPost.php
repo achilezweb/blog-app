@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pivot;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TagPost extends Model
+class CategoryPost extends Model //Pivot
 {
     use HasFactory;
 }

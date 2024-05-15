@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('roleUsers.index') }}">{{ __('RoleUsers') }}</a> | {{ __('Create Role') }}
+            <a href="{{ route('role-users.index') }}">{{ __('RoleUsers') }}</a> | {{ __('Create Role') }}
         </h2>
     </x-slot>
 
@@ -37,7 +37,7 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('roleUsers.store') }}">
+                    <form method="POST" action="{{ route('role-users.store') }}">
                         @csrf
 
                         <div>

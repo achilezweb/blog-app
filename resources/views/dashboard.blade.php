@@ -3,15 +3,15 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }} |
             <a href="{{ route('posts.index') }}">{{ __('Posts') }}</a> |
-            <a href="{{ route('categories.index') }} ">{{ __('Categories') }}</a> |
-            <a href="{{ route('category-audit-logs.index') }} ">{{ __('Category Audit Log') }}</a> |
-            <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
-            <a href="{{ route('roleUsers.index') }}">{{ __('Role Users') }}</a> |
-            <a href="#">{{ __('Category Posts') }}</a> |
+            <a href="{{ route('categories.index') }}">{{ __('Categories') }}</a> |
+            <a href="{{ route('category-audit-logs.index') }}">{{ __('Category Audit Log') }}</a> |
+            <a href="{{ route('category-post.index') }}">{{ __('Category Posts') }}</a> |
             <a href="#">{{ __('Tags') }}</a> |
+            <a href="#ta">{{ __('Tag Posts') }}</a> |
+            <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
+            <a href="{{ route('role-users.index') }}">{{ __('Role Users') }}</a> |
             <a href="#">{{ __('Privacy') }}</a> |
 
-            <a href="#">{{ __('Tag Posts') }}</a>
         </h2>
     </x-slot>
 

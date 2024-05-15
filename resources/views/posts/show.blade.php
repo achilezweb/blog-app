@@ -9,11 +9,25 @@
 
         <div class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</div>
         <span class="text-sm text-gray-600">
-            Category ID: xxx | Category Name: yyy |
             Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }}
         </span>
         <p class="text-sm text-gray-400">{{ $post->body }}</p>
-
+        @if ($post->tags)
+            <div class="text-white">Tag:</div>
+            <ul>
+                @foreach ($post->tags as $tag)
+                    <li><div class="text-white">{{ $tag->name }}</div></li>
+                @endforeach
+            </ul>
+        @endif
+        @if ($post->categories)
+            <div class="text-white">Tag:</div>
+            <ul>
+                @foreach ($post->categories as $category)
+                    <li><div class="text-white">{{ $category->name }}</div></li>
+                @endforeach
+            </ul>
+        @endif
         <h2 id="comments" class="font-semibold text-xl text-white leading-tight py-6">Comments:</h2>
 
         @auth

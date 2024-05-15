@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use App\Models\Pivot\TagPost;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -88,7 +89,8 @@ class Post extends Model
      */
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        // return $this->belongsToMany(Tag::class)->using(TagPost::class);
+        return $this->belongsToMany(Tag::class, 'tag_post');
     }
 
     /**

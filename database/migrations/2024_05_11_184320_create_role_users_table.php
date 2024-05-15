@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignIdFor(Role::class)->constrained()->restrictOnDelete(); //associated w/ role_id
             $table->foreignIdFor(User::class)->constrained()->restrictOnDelete(); //associated w/ user_id
             $table->primary(['role_id', 'user_id']);
-            $table->timestamps();
         });
     }
 

@@ -28,8 +28,46 @@
                 @error('body')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
-                <input type="hidden" name="category_id" id="category_id" value="1">
-                <input type="hidden" name="tag_id" id="tag_id" value="1">
+                {{-- using tags select dropdown --}}
+                {{-- <select name="tags[]" id="tags" class="form-control block w-full mt-1" multiple required>
+                    @foreach ($tags as $tag)
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                </select> --}}
+
+                {{-- using tags checkbox  --}}
+                @foreach ($tags as $tag)
+                    <div class="form-check form-check-inline text-white">
+                        <input class="form-check-input" type="checkbox" name="tags[]" id="tag_{{ $tag->id }}" value="{{ $tag->id }}"
+                            >
+                        <label class="form-check-label" for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
+                    </div>
+                @endforeach
+
+                @error('tags')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
+                {{-- using categories select dropdown --}}
+                <select name="categories[]" id="categories" class="form-control block w-full mt-1" multiple required>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+
+                {{-- using categories checkbox  --}}
+                {{-- @foreach ($categories as $category)
+                    <div class="form-check form-check-inline text-white">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="category_{{ $category->id }}" value="{{ $category->id }}"
+                            >
+                        <label class="form-check-label" for="category_{{ $category->id }}">{{ $category->name }}</label>
+                    </div>
+                @endforeach --}}
+
+                @error('categories')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
                 <input type="hidden" name="privacy_id" id="privacy_id" value="1">
                 <x-primary-button type="submit">Add Post</x-primary-button>
             </form>
@@ -40,8 +78,23 @@
                 <li class="py-4 px-2">
                     <a href="{{  route('posts.show', $post) }}" class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</a>
                     <p class="text-sm text-gray-400">{{ $post->body }}</p>
+                    @if ($post->tags)
+                        <div class="text-white">Tags:</div>
+                        <ul>
+                            @foreach ($post->tags as $tag)
+                                <li><div class="text-white">{{ $tag->name }}</div></li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    @if ($post->categories)
+                        <div class="text-white">Categories:</div>
+                        <ul>
+                            @foreach ($post->categories as $category)
+                                <li><div class="text-white">{{ $category->name }}</div></li>
+                            @endforeach
+                        </ul>
+                    @endif
                     <span class="text-sm text-gray-600">
-                        Category ID: xxx | Category Name: yyy |
                         Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong>
                     </span>
 

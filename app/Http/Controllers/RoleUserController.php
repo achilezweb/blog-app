@@ -15,12 +15,9 @@ class RoleUserController extends Controller
      */
     public function index()
     {
-        // $roleUserPivot = RoleUser::all();
-        // return view('role_user.index', compact('roleUserPivot'));
-
         //Gate?
         $roleUsers = User::with('roles')->paginate(10); // Fetch all users with their roles
-        return view('roleUsers.index', compact('roleUsers'));
+        return view('role-users.index', compact('roleUsers'));
     }
 
     /**
@@ -29,7 +26,7 @@ class RoleUserController extends Controller
     public function create()
     {
         //Gate?
-        return view('roleUsers.create');
+        return view('role-users.create');
     }
 
     /**
@@ -53,7 +50,7 @@ class RoleUserController extends Controller
 
         $user->roles()->syncWithoutDetaching($request->role_id); //better to use syncWithoutDetaching instead of attach
 
-        return redirect()->route('roleUsers.index')->with('success', 'RoleUser created successfully.');
+        return redirect()->route('role-users.index')->with('success', 'RoleUser created successfully.');
     }
 
     /**
@@ -63,7 +60,7 @@ class RoleUserController extends Controller
     {
         //Gate?
         $roleUser = User::with('roles')->findOrFail($id);
-        return view('roleUsers.show', compact('roleUser'));
+        return view('role-users.show', compact('roleUser'));
     }
 
     /**
@@ -74,7 +71,7 @@ class RoleUserController extends Controller
         // Gate?
         $user = User::with('roles')->findOrFail($id);
         $roles = Role::all();
-        return view('roleUsers.edit', compact('user', 'roles'));
+        return view('role-users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -97,7 +94,7 @@ class RoleUserController extends Controller
 
         $user->roles()->sync($request->role_id);  // Assuming single role replacement
 
-        return redirect()->route('roleUsers.index')->with('success', 'RoleUser updated successfully.');
+        return redirect()->route('role-users.index')->with('success', 'RoleUser updated successfully.');
     }
 
     /**
@@ -116,6 +113,6 @@ class RoleUserController extends Controller
 
         $user->roles()->detach($roleId);
 
-        return redirect()->route('roleUsers.index')->with('success', 'RoleUser removed successfully.');
+        return redirect()->route('role-users.index')->with('success', 'RoleUser removed successfully.');
     }
 }

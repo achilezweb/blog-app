@@ -14,9 +14,6 @@ class RoleUser extends Pivot
 
     protected $table = 'role_user';
 
-    // If your pivot table uses timestamps
-    public $timestamps = true;
-
     /**
      * The roles that belong to the RoleUser
      *

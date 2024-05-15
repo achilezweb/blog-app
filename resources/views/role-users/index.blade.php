@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('roleUsers.index') }}">{{ __('RoleUsers') }}</a>
+            <a href="{{ route('role-users.index') }}">{{ __('RoleUsers') }}</a>
         </h2>
     </x-slot>
 
@@ -40,7 +40,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name | <a href="{{ route('roleUsers.create') }}">Assign New User Roles</a>
+                                Name | <a href="{{ route('role-users.create') }}">Assign New User Roles</a>
                             </th>
                             <th scope="col" class="relative px-6 py-3">
                                 Edit
@@ -54,15 +54,15 @@
                         @foreach ($roleUsers as $roleUser)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('roleUsers.show', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">{{ $roleUser->name }} - Roles: {{ implode(', ', $roleUser->roles->pluck('name')->toArray()) }}</a>
+                                    <a href="{{ route('role-users.show', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">{{ $roleUser->name }} - Roles: {{ implode(', ', $roleUser->roles->pluck('name')->toArray()) }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('roleUsers.edit', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="{{ route('role-users.edit', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @foreach ($roleUser->roles as $role)
                                         <span>{{ $role->name }}</span>
-                                        <form action="{{ route('roleUsers.destroy', ['userId' => $roleUser->id, 'roleId' => $role->id]) }}" method="POST" class="inline">
+                                        <form action="{{ route('role-users.destroy', ['userId' => $roleUser->id, 'roleId' => $role->id]) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900 ml-4">
