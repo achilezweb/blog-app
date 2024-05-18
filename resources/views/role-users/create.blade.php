@@ -53,7 +53,9 @@
                         <div>
                             <select name="role_id" id="role_id" class="form-control">
                                 @foreach(App\Models\Role::all() as $role)
+                                @if ((auth()->user()->hasRoles('admin') && $role->name !== 'superadmin') || auth()->user()->hasRoles('superadmin'))
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('role_id')

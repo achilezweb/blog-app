@@ -2,7 +2,8 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('role-users.index') }}">{{ __('RoleUsers') }}</a>
+            <a href="{{ route('role-users.index') }}">{{ __('RoleUsers') }}</a> |
+            <a href="{{ route('role-users.create') }}">{{ __('New RoleUser') }}</a>
         </h2>
     </x-slot>
 
@@ -40,7 +41,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name | <a href="{{ route('role-users.create') }}">Assign New User Roles</a>
+                                Name
                             </th>
                             <th scope="col" class="relative px-6 py-3">
                                 Edit
@@ -57,11 +58,16 @@
                                     <a href="{{ route('role-users.show', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">{{ $roleUser->name }} - Roles: {{ implode(', ', $roleUser->roles->pluck('name')->toArray()) }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('role-users.edit', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    @if ((auth()->user()->hasRoles('admin') && !$roleUser->hasRoles('superadmin')) || auth()->user()->hasRoles('superadmin'))
+                                        <a href="{{ route('role-users.edit', $roleUser) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    @else
+                                        Edit
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @foreach ($roleUser->roles as $role)
                                         <span>{{ $role->name }}</span>
+                                        @if ((auth()->user()->hasRoles('admin') && !$roleUser->hasRoles('superadmin')) || auth()->user()->hasRoles('superadmin'))
                                         <form action="{{ route('role-users.destroy', ['userId' => $roleUser->id, 'roleId' => $role->id]) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -69,6 +75,9 @@
                                                 Remove
                                             </button>
                                         </form>
+                                        @else
+                                            <div>Remove</div>
+                                        @endif
                                     @endforeach
                                 </td>
                             </tr>

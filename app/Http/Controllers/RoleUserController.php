@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoleUserRequest;
 use App\Http\Requests\UpdateRoleUserRequest;
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 
@@ -32,21 +31,12 @@ class RoleUserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleUserRequest $request)
     {
-        //Gate?
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role_id' => 'required|exists:roles,id',
-        ]);
+        $request->validated();
 
         $user = User::find($request->user_id);
-        $role = Role::find($request->role_id);
-
-        // Prevent admins from creating or assigning the superadmin role
-        if (auth()->user()->hasRoles('admin') && !auth()->user()->hasRoles('superadmin') && $role->name === 'superadmin') {
-            return back()->with('error', 'Admins cannot assign the superadmin role.');
-        }
+        $roles = Role::find($request->role_id);
 
         $user->roles()->syncWithoutDetaching($request->role_id); //better to use syncWithoutDetaching instead of attach
 
@@ -77,24 +67,26 @@ class RoleUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) //RoleUser $roleUser
+    public function update(UpdateRoleUserRequest $request, $id) //RoleUser $roleUser
     {
-        // Gate?
-        $request->validate([
-            'role_id' => 'required|exists:roles,id',
-        ]);
+        $request->validated();
 
         $user = User::findOrFail($id);
-        $role = Role::find($request->role_id);
+        $roles = Role::find($request->role_id);
 
-        // Prevent admins from creating or assigning the superadmin role
-        if (auth()->user()->hasRoles('admin') && !auth()->user()->hasRoles('superadmin') && $role->name === 'superadmin') {
+        $roleHasSuperAdmin = $roles->contains(function ($role) {
+            return $role['name'] === 'superadmin';
+        });
+
+        // Rules: Prevent admins from creating or assigning the superadmin role
+        if (auth()->user()->hasRoles('admin') && !auth()->user()->hasRoles('superadmin') && $roleHasSuperAdmin) {
             return back()->with('error', 'Admins cannot update the superadmin role.');
         }
 
         $user->roles()->sync($request->role_id);  // Assuming single role replacement
 
         return redirect()->route('role-users.index')->with('success', 'RoleUser updated successfully.');
+
     }
 
     /**
@@ -104,12 +96,7 @@ class RoleUserController extends Controller
     {
         // Gate?
         $user = User::findOrFail($userId);
-        $role = Role::findOrFail($roleId);
-
-        // Prevent admins from creating or assigning the superadmin role
-        if (auth()->user()->hasRoles('admin') && !auth()->user()->hasRoles('superadmin') && $role->name === 'superadmin') {
-            return back()->with('error', 'Admins cannot remove the superadmin role.');
-        }
+        $roles = Role::findOrFail($roleId);
 
         $user->roles()->detach($roleId);
 
