@@ -1,9 +1,8 @@
-<!-- roles/index.blade.php -->
+<!-- roleUsers/index.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
-            <a href="{{ route('roles.create') }}">{{ __('Create Role') }}</a>
+            <a href="{{ route('category-post.index') }}">{{ __('CategoryPost') }}</a>
         </h2>
     </x-slot>
 
@@ -41,10 +40,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Description
+                                Name | <a href="{{ route('category-post.create') }}">Assign New Category Post</a>
                             </th>
                             <th scope="col" class="relative px-6 py-3">
                                 Edit
@@ -55,23 +51,25 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($roles as $role)
+                        @foreach ($categoryPosts as $categoryPost)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('roles.show', $role) }}" class="text-indigo-600 hover:text-indigo-900">{{ $role->name }}</a>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('roles.show', $role) }}" class="text-indigo-600 hover:text-indigo-900">{{ $role->description }}</a>
+                                    <a href="{{ route('category-post.show', $categoryPost) }}" class="text-indigo-600 hover:text-indigo-900">{{ $categoryPost->name }} - Roles: {{ implode(', ', $categoryPosts->categories->pluck('name')->toArray()) }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('roles.edit', $role) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="{{ route('category-post.edit', $categoryPost) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <form action="{{ route('roles.destroy', $role) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                                    </form>
+                                    @foreach ($categoryPost->categories as $category)
+                                        <span>{{ $category->name }}</span>
+                                        <form action="{{ route('category-post.destroy', ['userId' => $categoryPost->id, 'roleId' => $category->id]) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900 ml-4">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    @endforeach
                                 </td>
                             </tr>
                         @endforeach
@@ -80,7 +78,7 @@
             </div>
 
             <div class="text-xl font-semibold block text-white">
-                Pagination: {{ $roles->links() }}
+                Pagination: {{ $roleUsers->links() }}
             </div>
 
         </div>

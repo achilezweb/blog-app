@@ -13,7 +13,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::latest()->paginate(10);
+        return view('tags.index', compact('tags'));
     }
 
     /**
@@ -21,7 +22,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('tags.create');
     }
 
     /**
@@ -29,7 +30,8 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        //
+        Tag::create($request->validated());
+        return redirect()->route('tags.index')->with('success', 'Tag created successfully.');
     }
 
     /**
@@ -37,7 +39,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        return view('tags.show', compact('tag'));
     }
 
     /**
@@ -45,7 +47,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('tags.edit', compact('tag'));
     }
 
     /**
@@ -53,7 +55,8 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, Tag $tag)
     {
-        //
+        $tag->update($request->validated());
+        return redirect()->route('tags.index')->with('success', 'Tag updated successfully.');
     }
 
     /**
@@ -61,6 +64,23 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        // Delete related audit logs first not to have issues on CategoryAuditLog (Attempt to read property "name" on null)
+        // TagAuditLog::where('category_id', $category->id)->delete();
+
+        $tag->delete();
+        return redirect()->route('tags.index')->with('success', 'Tag deleted successfully.');
+    }
+    public function showDeleted()
+    {
+        $tags = Tag::onlyTrashed()->paginate(10);
+        return view('tags.deleted', compact('tags'));
+    }
+
+    public function restore($id)
+    {
+        $tag = Tag::onlyTrashed()->findOrFail($id);
+        $tag->restore();
+
+        return redirect()->route('tags.deleted')->with('success', 'Tag restored successfully.');
     }
 }

@@ -1,40 +1,40 @@
-<!-- roles/index.blade.php -->
+<!-- privacies/index.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
-            <a href="{{ route('roles.create') }}">{{ __('Create Role') }}</a>
+            <a href="{{ route('privacies.index') }}">{{ __('Privacies') }}</a> |
+            <a href="{{ route('privacies.create') }}">New Privacy</a>
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Display success message -->
-            @if (session('success'))
-            <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md" role="alert">
-                <div class="flex">
-                    <div class="py-1"><svg class="fill-current h-6 w-6 text-green-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-1-9V8a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg></div>
-                    <div>
-                        <p class="font-bold text-white">Success</p>
-                        <p class="text-sm text-white">{{ session('success') }}</p>
-                    </div>
+        <!-- Display success message -->
+        @if (session('success'))
+        <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md" role="alert">
+            <div class="flex">
+                <div class="py-1"><svg class="fill-current h-6 w-6 text-green-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-1-9V8a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg></div>
+                <div>
+                    <p class="font-bold text-white">Success</p>
+                    <p class="text-sm text-white">{{ session('success') }}</p>
                 </div>
             </div>
-            @endif
+        </div>
+        @endif
 
-            <!-- Display error message -->
-            @if (session('error'))
-            <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md" role="alert">
-                <div class="flex">
-                    <div class="py-1"><svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-1-9V8a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg></div>
-                    <div>
-                        <p class="font-bold text-red-900">Error</p>
-                        <p class="text-sm text-red-900">{{ session('error') }}</p>
-                    </div>
+        <!-- Display error message -->
+        @if (session('error'))
+        <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md" role="alert">
+            <div class="flex">
+                <div class="py-1"><svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-1-9V8a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg></div>
+                <div>
+                    <p class="font-bold text-red-900">Error</p>
+                    <p class="text-sm text-red-900">{{ session('error') }}</p>
                 </div>
             </div>
-            @endif
+        </div>
+        @endif
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -55,19 +55,19 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($roles as $role)
+                        @foreach ($privacies as $privacy)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('roles.show', $role) }}" class="text-indigo-600 hover:text-indigo-900">{{ $role->name }}</a>
+                                    <a href="{{ route('privacies.show', $privacy) }}" class="text-indigo-600 hover:text-indigo-900">{{ $privacy->name }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('roles.show', $role) }}" class="text-indigo-600 hover:text-indigo-900">{{ $role->description }}</a>
+                                    <a href="{{ route('privacies.show', $privacy) }}" class="text-indigo-600 hover:text-indigo-900">{{ $privacy->description }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('roles.edit', $role) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="{{ route('privacies.edit', $privacy) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <form action="{{ route('roles.destroy', $role) }}" method="POST">
+                                    <form action="{{ route('privacies.destroy', $privacy) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
@@ -80,7 +80,7 @@
             </div>
 
             <div class="text-xl font-semibold block text-white">
-                Pagination: {{ $roles->links() }}
+                Pagination: {{ $privacies->links() }}
             </div>
 
         </div>

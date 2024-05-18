@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategoryPost;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CategoryPostController extends Controller
@@ -12,7 +12,9 @@ class CategoryPostController extends Controller
      */
     public function index()
     {
-        //
+        //Gate?
+        $categoryPosts = Post::with('categories')->latest()->paginate(10); // Fetch all users with their roles
+        return view('category-post.index', compact('categoryPosts'));
     }
 
     /**

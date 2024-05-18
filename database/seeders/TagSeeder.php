@@ -14,10 +14,10 @@ class TagSeeder extends Seeder
     public function run(): void
     {
         $tags = [
-            'Tags 1',
-            'Tags 2',
-            'Tags 3',
-            'Tags 4',
+            'tag1',
+            'tag2',
+            'tag3',
+            'tag4',
             'UnTagged',
         ];
 

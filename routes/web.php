@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CategoryAuditLogController;
 use App\Http\Controllers\CategoryPostController;
+use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\TagController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,31 +28,40 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// public endpoints
 Route::get('/posts/search', [PostController::class, 'search'])->name('posts.search');
 Route::resource('posts', PostController::class);
 
+// auth, verified endpoints
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('posts.comments', CommentController::class);
 
 });
 
+// auth, verified, admin, superadmin endpoints
 Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function () {
     Route::resource('role-users', RoleUserController::class)->except(['destroy']);
     Route::delete('/role-users/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
         ->name('role-users.destroy');
 
-    Route::resource('categories', CategoryController::class);
     Route::get('/categories/deleted', [CategoryController::class, 'showDeleted'])
-        ->name('categories.deleted');
+        ->name('categories.deleted'); //should be above the resource (using softdelete)
     Route::post('/categories/restore/{id}', [CategoryController::class, 'restore'])
-        ->name('categories.restore');
+        ->name('categories.restore'); //should be above the resource (using softdelete)
+    Route::resource('categories', CategoryController::class);
 
     Route::resource('category-post', CategoryPostController::class);
 
     Route::get('/category-audit-logs', [CategoryAuditLogController::class, 'index'])
         ->name('category-audit-logs.index');
 
+    Route::get('/tags/deleted', [TagController::class, 'showDeleted'])
+        ->name('tags.deleted'); //should be above the resource (using softdelete)
+    Route::post('/tags/restore/{id}', [TagController::class, 'restore'])
+        ->name('tags.restore'); //should be above the resource (using softdelete)
+    Route::resource('tags', TagController::class);
 
     Route::resource('roles', RoleController::class);
+    Route::resource('privacies', PrivacyController::class);
 
 });

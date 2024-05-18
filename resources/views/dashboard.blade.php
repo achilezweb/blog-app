@@ -6,11 +6,11 @@
             <a href="{{ route('categories.index') }}">{{ __('Categories') }}</a> |
             <a href="{{ route('category-audit-logs.index') }}">{{ __('Category Audit Log') }}</a> |
             <a href="{{ route('category-post.index') }}">{{ __('Category Posts') }}</a> |
-            <a href="#">{{ __('Tags') }}</a> |
-            <a href="#ta">{{ __('Tag Posts') }}</a> |
+            <a href="{{ route('tags.index') }}">{{ __('Tags') }}</a> |
+            <a href="#">{{ __('Tag Posts') }}</a> |
             <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
             <a href="{{ route('role-users.index') }}">{{ __('Role Users') }}</a> |
-            <a href="#">{{ __('Privacy') }}</a> |
+            <a href="{{ route('privacies.index') }}">{{ __('Privacy') }}</a>
 
         </h2>
     </x-slot>

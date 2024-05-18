@@ -14,11 +14,11 @@
                         @csrf
 
                         <div>
-                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Category Name" required autofocus>
+                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Category Name" value="{{ old('name') }}" required autofocus>
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description">
+                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" value="{{ old('description') }}">
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror

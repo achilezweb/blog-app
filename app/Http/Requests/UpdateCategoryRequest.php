@@ -11,7 +11,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // should be true, if false returns 403 ACTION IS UNAUTHORIZED.
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:200', 'unique:categories,name,' . $this->category->id],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

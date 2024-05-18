@@ -11,7 +11,7 @@ class UpdatePrivacyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdatePrivacyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:200', 'unique:privacies,name,' . $this->privacy->id],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

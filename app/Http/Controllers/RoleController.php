@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -31,15 +30,9 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //Gate?
-        // Validate request
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:200'],
-            'description' => ['nullable', 'string'],
-        ]);
-        Role::create([...$data]);
+        Role::create($request->validated());
         return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
@@ -64,16 +57,9 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //Gate::authorize('update', $role);// Validate request
-
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:200'],
-            'description' => ['nullable', 'string'],
-        ]);
-
-        $role->update([...$data]);
+        $role->update($request->validated());
         return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 

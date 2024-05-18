@@ -11,7 +11,10 @@
             <form action="{{ route('posts.comments.update', ['post' => $post, 'comment' => $comment]) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description">{{ $comment->body }}</textarea>
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required>{{ old('body') ?? $comment->body }}</textarea>
+                @error('body')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
                 <x-primary-button type="submit">Update Comment</x-primary-button>
             </form>
         @endcan

@@ -35,20 +35,15 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:200'],
-            'body' => ['required', 'string', 'max:255'],
-            'tags' => ['required', 'array'],
-            'tags.*' => ['exists:tags,id'],
-            'categories' => ['required', 'array'],
-            'categories.*' => ['exists:categories,id'],
+        //no gate
+        $validatedData = $request->validated();
 
-            'privacy_id' => ['required', 'string'],
-        ]);
+        // Add user_id to the validated data
+        $validatedData['user_id'] = $request->user()->id;
 
-        $post = Post::create([...$data, 'user_id' => $request->user()->id]);
+        $post = Post::create($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
 
@@ -78,22 +73,16 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
         Gate::authorize('update', $post); //handled by PostPolicy@update
 
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:200'],
-            'body' => ['required', 'string', 'max:255'],
-            'tags' => ['required', 'array'],
-            'tags.*' => ['exists:tags,id'],
-            'categories' => ['required', 'array'],
-            'categories.*' => ['exists:categories,id'],
+        $validatedData = $request->validated();
 
-            // 'privacy_id' => ['required', 'string'],
-        ]);
+        // Add user_id to the validated data
+        $validatedData['user_id'] = $request->user()->id;
 
-        $post->update([...$data, 'user_id' => $request->user()->id]);
+        $post->update($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
         return to_route('posts.index');

@@ -13,7 +13,8 @@ class PrivacyController extends Controller
      */
     public function index()
     {
-        //
+        $privacies = Privacy::latest()->paginate(10);
+        return view('privacies.index', compact('privacies'));
     }
 
     /**
@@ -21,7 +22,7 @@ class PrivacyController extends Controller
      */
     public function create()
     {
-        //
+        return view('privacies.create');
     }
 
     /**
@@ -29,7 +30,8 @@ class PrivacyController extends Controller
      */
     public function store(StorePrivacyRequest $request)
     {
-        //
+        Privacy::create($request->validated());
+        return redirect()->route('privacies.index')->with('success', 'Privacy created successfully.');
     }
 
     /**
@@ -37,7 +39,7 @@ class PrivacyController extends Controller
      */
     public function show(Privacy $privacy)
     {
-        //
+        return view('privacies.show', compact('privacy'));
     }
 
     /**
@@ -45,7 +47,7 @@ class PrivacyController extends Controller
      */
     public function edit(Privacy $privacy)
     {
-        //
+        return view('privacies.edit', compact('privacy'));
     }
 
     /**
@@ -53,7 +55,8 @@ class PrivacyController extends Controller
      */
     public function update(UpdatePrivacyRequest $request, Privacy $privacy)
     {
-        //
+        $privacy->update($request->validated());
+        return redirect()->route('privacies.index')->with('success', 'Privacy updated successfully.');
     }
 
     /**
@@ -61,6 +64,7 @@ class PrivacyController extends Controller
      */
     public function destroy(Privacy $privacy)
     {
-        //
+        $privacy->delete();
+        return redirect()->route('privacies.index')->with('success', 'Privacy deleted successfully.');
     }
 }

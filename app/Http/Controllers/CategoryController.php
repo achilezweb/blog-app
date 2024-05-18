@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Models\CategoryAuditLog;
 
 class CategoryController extends Controller
@@ -15,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //Gate?
+        //No gate needed for admin/superadmin
         $categories = Category::latest()->paginate(10);
         return view('categories.index', compact('categories'));
     }
@@ -25,22 +24,17 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //Gate?
+        //No gate needed for admin/superadmin
         return view('categories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //Gate?
-        // Validate request
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:200'],
-            'description' => ['nullable', 'string'],
-        ]);
-        Category::create([...$data]);
+        //No gate needed for admin/superadmin
+        Category::create($request->validated());
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
@@ -49,7 +43,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //Gate?
+        //No gate needed for admin/superadmin
         return view('categories.show', compact('category'));
     }
 
@@ -58,22 +52,17 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //Gate::authorize('update', $category);// Validate request
+        //No gate needed for admin/superadmin
         return view('categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //Gate::authorize('update', $category);// Validate request
-
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:200'],
-            'description' => ['nullable', 'string'],
-        ]);
-        $category->update([...$data]);
+        //No gate needed for admin/superadmin
+        $category->update($request->validated());
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
@@ -82,9 +71,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //Gate::authorize('delete', $category);// Validate request
+        //No gate needed for admin/superadmin
 
-        // Delete related audit logs first not to have issues on CategoryAuditLog
+        // Delete related audit logs first not to have issues on CategoryAuditLog (Attempt to read property "name" on null)
         CategoryAuditLog::where('category_id', $category->id)->delete();
 
         $category->delete();

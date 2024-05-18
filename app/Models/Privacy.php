@@ -17,6 +17,7 @@ class Privacy extends Model
      */
     protected $fillable = [
         'name',
+        'description',
     ];
 
     /**

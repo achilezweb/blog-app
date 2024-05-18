@@ -20,16 +20,16 @@
         @auth
             <form action="{{ route('posts.store') }}" method="POST">
                 @csrf
-                <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" required autofocus>
+                <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" value="{{ old('title') }}" required autofocus>
                 @error('title')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required></textarea>
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required>{{ old('body') }}</textarea>
                 @error('body')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
                 {{-- using tags select dropdown --}}
-                {{-- <select name="tags[]" id="tags" class="form-control block w-full mt-1" multiple required>
+                {{-- <select name="tags[]" id="tags" class="form-control block w-full mt-1" multiple >
                     @foreach ($tags as $tag)
                         <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                     @endforeach
@@ -49,7 +49,7 @@
                 @enderror
 
                 {{-- using categories select dropdown --}}
-                <select name="categories[]" id="categories" class="form-control block w-full mt-1" multiple required>
+                <select name="categories[]" id="categories" class="form-control block w-full mt-1" multiple >
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach

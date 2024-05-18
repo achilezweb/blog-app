@@ -21,7 +21,7 @@
             </ul>
         @endif
         @if ($post->categories)
-            <div class="text-white">Tag:</div>
+            <div class="text-white">Category:</div>
             <ul>
                 @foreach ($post->categories as $category)
                     <li><div class="text-white">{{ $category->name }}</div></li>
@@ -33,7 +33,7 @@
         @auth
             <form action="{{ route('posts.comments.store', $post) }}" method="POST">
                 @csrf
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Comment" required></textarea>
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Comment" value="{{ old('body') }}" required></textarea>
                 @error('body')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror

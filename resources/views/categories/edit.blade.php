@@ -15,11 +15,11 @@
                         @method('PUT')
 
                         <div>
-                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Category Name" value="{{ $category->name }}" required autofocus>
+                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Category Name" value="{{ old('name') ?? $category->name }}" required autofocus>
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" value="{{ $category->description }}">
+                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" value="{{ old('description') ?? $category->description }}">
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
-use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
 
@@ -31,11 +30,14 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Post $post)
+    public function store(StoreCommentRequest $request, Post $post)
     {
-        $data = $request->validate(['body' => ['required', 'string', 'max:255']]);
+        $validatedData = $request->validated();
 
-        $post->comments()->create([...$data, 'user_id' => $request->user()->id]);
+        // Add user_id to the validated data
+        $validatedData['user_id'] = $request->user()->id;
+
+        $post->comments()->create($validatedData);
         return to_route('posts.show', $post)->withFragment('comments');
 
     }
@@ -65,15 +67,16 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post, Comment $comment)
+    public function update(UpdateCommentRequest $request, Post $post, Comment $comment)
     {
         Gate::authorize('update', $comment); //handled by CommentPolicy@update
 
-        $data = $request->validate([
-            'body' => ['required', 'string', 'max:255'],
-        ]);
+        $validatedData = $request->validated();
 
-        $comment->update([...$data, 'user_id' => $request->user()->id]);
+        // Add user_id to the validated data
+        $validatedData['user_id'] = $request->user()->id;
+
+        $comment->update($validatedData);
         return to_route('posts.show', $post)->withFragment('comments');
     }
 

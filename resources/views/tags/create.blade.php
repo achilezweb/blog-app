@@ -1,8 +1,8 @@
-<!-- roles/create.blade.php -->
+<!-- tags/create.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> | {{ __('Create Role') }}
+            <a href="{{ route('tags.index') }}">{{ __('Tags') }}</a> | {{ __('Create Tag') }}
         </h2>
     </x-slot>
 
@@ -10,17 +10,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('roles.store') }}">
+                    <form method="POST" action="{{ route('tags.store') }}">
                         @csrf
 
                         <div>
-                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Role Name" value="{{ old('name') }}" required autofocus>
+                            <input type="text" name="name" id="name" class="block mt-1 w-full" placeholder="Enter Tag Name" value="{{ old('name') }}" required autofocus>
                             @error('name')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-
-                            <input type="text" name="description" id="description" class="block mt-1 w-full" placeholder="Enter Description" value="{{ old('description') }}">
-                            @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

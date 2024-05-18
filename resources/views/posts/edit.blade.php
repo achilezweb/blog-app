@@ -11,17 +11,17 @@
             <form action="{{ route('posts.update', $post) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" value="{{ $post->title }}">
+                <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" value="{{ old('title') ?? $post->title }}" required>
                 @error('title')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description">{{ $post->body }}</textarea>
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required>{{ old('body') ?? $post->body }}</textarea>
                 @error('body')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
                 {{-- using tags select dropdown --}}
-                {{-- <select name="tags[]" id="tags" class="form-control block w-full mt-1" multiple required>
+                {{-- <select name="tags[]" id="tags" class="form-control block w-full mt-1" multiple >
                     @foreach ($tags as $tag)
                         <option value="{{ $tag->id   }}" {{ $post->tags->contains($tag) ? 'selected' : '' }}>{{ $tag->name }}</option>
                     @endforeach
@@ -40,7 +40,7 @@
                 @enderror
 
                 {{-- using categories select dropdown --}}
-                <select name="categories[]" id="categories" class="form-control block w-full mt-1" multiple required>
+                <select name="categories[]" id="categories" class="form-control block w-full mt-1" multiple >
                     @foreach ($categories as $category)
                         <option value="{{ $category->id   }}" {{ $post->categories->contains($category) ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
