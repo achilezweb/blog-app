@@ -65,7 +65,7 @@ class Tag extends Model
     public function posts(): BelongsToMany
     {
         // return $this->belongsToMany(Post::class)->using(TagPost::class);
-        return $this->belongsToMany(Post::class, 'tag_post');
+        return $this->belongsToMany(Post::class, 'tag_post'); //customized as it should be post_tag as default
     }
 
     /**
