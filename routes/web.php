@@ -11,6 +11,8 @@ use App\Http\Controllers\CategoryAuditLogController;
 use App\Http\Controllers\CategoryPostController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TagAuditLogController;
+use App\Http\Controllers\TagPostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,9 +42,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // auth, verified, admin, superadmin endpoints
 Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function () {
-    Route::resource('role-users', RoleUserController::class)->except(['destroy']);
-    Route::delete('/role-users/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
-        ->name('role-users.destroy');
+    Route::resource('role-user', RoleUserController::class)->except(['destroy']);
+    Route::delete('/role-user/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
+        ->name('role-user.destroy');
 
     Route::get('/categories/deleted', [CategoryController::class, 'showDeleted'])
         ->name('categories.deleted'); //should be above the resource (using softdelete)
@@ -51,6 +53,8 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::resource('categories', CategoryController::class);
 
     Route::resource('category-post', CategoryPostController::class);
+    Route::delete('/category-post/{postId}/{categoryId}', [CategoryPostController::class, 'destroy'])
+        ->name('category-post.destroy');
 
     Route::get('/category-audit-logs', [CategoryAuditLogController::class, 'index'])
         ->name('category-audit-logs.index');
@@ -60,6 +64,13 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::post('/tags/restore/{id}', [TagController::class, 'restore'])
         ->name('tags.restore'); //should be above the resource (using softdelete)
     Route::resource('tags', TagController::class);
+
+    Route::resource('tag-post', TagPostController::class);
+    Route::delete('/tag-post/{postId}/{tagId}', [TagPostController::class, 'destroy'])
+        ->name('tag-post.destroy');
+
+    Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
+    ->name('tag-audit-logs.index');
 
     Route::resource('roles', RoleController::class);
     Route::resource('privacies', PrivacyController::class);

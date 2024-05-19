@@ -1,9 +1,9 @@
-<!-- category-post/index.blade.php -->
+<!-- tag-post/index.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('category-post.index') }}">{{ __('CategoryPosts') }}</a> |
-            <a href="{{ route('category-post.create') }}">{{ __('New CategoryPost') }}</a>
+            <a href="{{ route('tag-post.index') }}">{{ __('TagPosts') }}</a> |
+            <a href="{{ route('tag-post.create') }}">{{ __('New TagPost') }}</a>
         </h2>
     </x-slot>
 
@@ -52,18 +52,18 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($categoryPosts as $categoryPost)
+                        @foreach ($tagPosts as $tagPost)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('category-post.show', $categoryPost) }}" class="text-indigo-600 hover:text-indigo-900">{{ $categoryPost->title }} - Categories: {{ implode(', ', $categoryPost->categories->pluck('name')->toArray()) }}</a>
+                                    <a href="{{ route('tag-post.show', $tagPost) }}" class="text-indigo-600 hover:text-indigo-900">{{ $tagPost->title }} - Tags: {{ implode(', ', $tagPost->tags->pluck('name')->toArray()) }}</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('category-post.edit', $categoryPost) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="{{ route('tag-post.edit', $tagPost) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    @foreach ($categoryPost->categories as $category)
-                                        <span>{{ $category->name }}</span>
-                                        <form action="{{ route('category-post.destroy', ['postId' => $categoryPost->id, 'categoryId' => $category->id]) }}" method="POST" class="inline">
+                                    @foreach ($tagPost->tags as $tag)
+                                        <span>{{ $tag->name }}</span>
+                                        <form action="{{ route('tag-post.destroy', ['postId' => $tagPost->id, 'tagId' => $tag->id]) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900 ml-4">
@@ -79,7 +79,7 @@
             </div>
 
             <div class="text-xl font-semibold block text-white">
-                Pagination: {{ $categoryPosts->links() }}
+                Pagination: {{ $tagPosts->links() }}
             </div>
 
         </div>

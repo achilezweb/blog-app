@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('role-users.index') }}">{{ __('RoleUsers') }}</a> | {{ __('Show Role') }}
+            <a href="{{ route('role-user.index') }}">{{ __('RoleUsers') }}</a> | {{ __('Show Role') }}
         </h2>
     </x-slot>
 

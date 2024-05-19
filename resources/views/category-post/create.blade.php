@@ -1,8 +1,10 @@
-<!-- roleUsers/create.blade.php -->
+<!-- category-post/create.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            <a href="{{ route('role-users.index') }}">{{ __('RoleUsers') }}</a> | {{ __('Create Role') }}
+            <a href="{{ route('category-post.index') }}">{{ __('CategoryPosts') }}</a> |
+            {{ __('Create CategoryPost') }}
+
         </h2>
     </x-slot>
 
@@ -37,28 +39,26 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('role-users.store') }}">
+                    <form method="POST" action="{{ route('category-post.store') }}">
                         @csrf
 
                         <div>
-                            <select name="user_id" id="user_id" class="form-control">
-                                @foreach(App\Models\User::all() as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <select name="post_id" id="post_id" class="form-control">
+                                @foreach(App\Models\Post::all() as $post)
+                                    <option value="{{ $post->id }}">{{ $post->title }}</option>
                                 @endforeach
                             </select>
-                            @error('user_id')
+                            @error('post_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
-                            <select name="role_id" id="role_id" class="form-control">
-                                @foreach(App\Models\Role::all() as $role)
-                                @if ((auth()->user()->hasRoles('admin') && $role->name !== 'superadmin') || auth()->user()->hasRoles('superadmin'))
-                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                @endif
+                            <select name="category_id" id="category_id" class="form-control">
+                                @foreach(App\Models\Category::all() as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            @error('role_id')
+                            @error('category_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
 
