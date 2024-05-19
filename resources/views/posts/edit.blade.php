@@ -59,6 +59,16 @@
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
+                <select name="privacy_id" id="privacy_id" class="form-control">
+                    @foreach(App\Models\Privacy::all() as $privacy)
+                        <option value="{{ $privacy->id }}" {{ ($post->privacy_id == $privacy->id) ? 'selected' : '' }}>
+                            {{ $privacy->name }}
+                    @endforeach
+                </select>
+                @error('privacy_id')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
                 <x-primary-button type="submit">Update Post</x-primary-button>
             </form>
         @endcan

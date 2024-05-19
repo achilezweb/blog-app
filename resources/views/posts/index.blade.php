@@ -68,7 +68,15 @@
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
-                <input type="hidden" name="privacy_id" id="privacy_id" value="1">
+                <select name="privacy_id" id="privacy_id" class="form-control">
+                    @foreach(App\Models\Privacy::all() as $privacy)
+                        <option value="{{ $privacy->id }}">{{ $privacy->name }}</option>
+                    @endforeach
+                </select>
+                @error('privacy_id')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
                 <x-primary-button type="submit">Add Post</x-primary-button>
             </form>
         @endauth
@@ -95,7 +103,7 @@
                         </ul>
                     @endif
                     <span class="text-sm text-gray-600">
-                        Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong>
+                        Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> Privacy: {{ $post->privacy->name }}
                     </span>
 
                     @can('delete', $post)
