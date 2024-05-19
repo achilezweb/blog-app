@@ -13,6 +13,8 @@ use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TagAuditLogController;
 use App\Http\Controllers\TagPostController;
+use App\Jobs\SendEmailJob;
+use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -74,5 +76,15 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
 
     Route::resource('roles', RoleController::class);
     Route::resource('privacies', PrivacyController::class);
+
+    Route::resource('email', EmailController::class);
+
+    // dispatch email using queue
+    Route::get('/send-email', function () {
+        $details = ['email' => 'user@example.com'];
+        SendEmailJob::dispatch($details);
+
+        return "Email is being sent in the background!";
+    })->name('send-email.index');
 
 });

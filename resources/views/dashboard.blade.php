@@ -11,7 +11,8 @@
             <a href="{{ route('tag-post.index') }}">{{ __('Tag Posts') }}</a> |
             <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
             <a href="{{ route('role-user.index') }}">{{ __('Role Users') }}</a> |
-            <a href="{{ route('privacies.index') }}">{{ __('Privacy') }}</a>
+            <a href="{{ route('privacies.index') }}">{{ __('Privacy') }}</a> |
+            <a href="{{ route('email.index') }}">{{ __('Email') }}</a>
 
         </h2>
     </x-slot>
