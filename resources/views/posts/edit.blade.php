@@ -61,7 +61,7 @@
 
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
-                        <option value="{{ $privacy->id }}" {{ ($post->privacy_id == $privacy->id) ? 'selected' : '' }}>
+                        <option value="{{ $privacy->id }}" {{ ($post->privacy_id === $privacy->id) ? 'selected' : '' }}>
                             {{ $privacy->name }}
                     @endforeach
                 </select>
