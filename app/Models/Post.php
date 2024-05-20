@@ -50,6 +50,36 @@ class Post extends Model
 
             $post->slug = $slug;
         });
+
+        // When a post is created
+        static::created(function ($post) {
+            PostAuditLog::create([
+                'post_id' => $post->id,
+                'updated_by' => auth()->id() ?? 1, // if no auth()->id() set to 1
+                'action' => 'created',
+                'changes' => json_encode(['all' => $post->toArray()]),
+            ]);
+        });
+
+        // When a post is updated
+        static::updated(function ($post) {
+            PostAuditLog::create([
+                'post_id' => $post->id,
+                'updated_by' => auth()->id() ?? 1, // if no auth()->id() set to 1
+                'action' => 'updated',
+                'changes' => json_encode($post->getChanges()),
+            ]);
+        });
+
+        // When a post is deleted, disabled due to constraint when deleting models in PostAuditLog
+        // static::deleted(function ($post) {
+        //     PostAuditLog::create([
+        //         'post_id' => $post->id,
+        //         'updated_by' => auth()->id() ?? 1, // if no auth()->id() set to 1
+        //         'action' => 'deleted',
+        //         'changes' => json_encode(['deleted' => true]),
+        //     ]);
+        // });
     }
 
     /**
@@ -118,7 +148,22 @@ class Post extends Model
         ); //$html = $post->html;
     }
 
+    /**
+     * Get all of the auditLogs for the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function auditLogs(): HasMany
+    {
+        return $this->hasMany(PostAuditLog::class, 'post_id');
+    }
 
+    // Get the last user who updated this post
+    public function getLastUpdaterAttribute()
+    {
+        $log = $this->auditLogs()->latest()->first();
+        return $log ? $log : null;
+    }
 
 
 }

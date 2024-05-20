@@ -13,6 +13,8 @@ use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TagAuditLogController;
 use App\Http\Controllers\TagPostController;
+use App\Http\Controllers\PostAuditLogController;
+use App\Http\Controllers\CommentAuditLogController;
 use App\Jobs\SendEmailJob;
 use App\Http\Controllers\EmailController;
 
@@ -58,9 +60,6 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::delete('/category-post/{postId}/{categoryId}', [CategoryPostController::class, 'destroy'])
         ->name('category-post.destroy');
 
-    Route::get('/category-audit-logs', [CategoryAuditLogController::class, 'index'])
-        ->name('category-audit-logs.index');
-
     Route::get('/tags/deleted', [TagController::class, 'showDeleted'])
         ->name('tags.deleted'); //should be above the resource (using softdelete)
     Route::post('/tags/restore/{id}', [TagController::class, 'restore'])
@@ -71,11 +70,17 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::delete('/tag-post/{postId}/{tagId}', [TagPostController::class, 'destroy'])
         ->name('tag-post.destroy');
 
-    Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
-    ->name('tag-audit-logs.index');
-
     Route::resource('roles', RoleController::class);
     Route::resource('privacies', PrivacyController::class);
+
+    Route::get('/post-audit-logs', [PostAuditLogController::class, 'index'])
+        ->name('post-audit-logs.index');
+    Route::get('/comment-audit-logs', [CommentAuditLogController::class, 'index'])
+        ->name('comment-audit-logs.index');
+    Route::get('/category-audit-logs', [CategoryAuditLogController::class, 'index'])
+        ->name('category-audit-logs.index');
+    Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
+        ->name('tag-audit-logs.index');
 
     Route::resource('email', EmailController::class);
 

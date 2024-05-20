@@ -4,16 +4,17 @@
             {{ __('Dashboard') }} |
             <a href="{{ route('posts.index') }}">{{ __('Posts') }}</a> |
             <a href="{{ route('categories.index') }}">{{ __('Categories') }}</a> |
-            <a href="{{ route('category-audit-logs.index') }}">{{ __('Category Audit Log') }}</a> |
             <a href="{{ route('category-post.index') }}">{{ __('Category Posts') }}</a> |
             <a href="{{ route('tags.index') }}">{{ __('Tags') }}</a> |
-            <a href="{{ route('tag-audit-logs.index') }}">{{ __('Tag Audit Log') }}</a> |
             <a href="{{ route('tag-post.index') }}">{{ __('Tag Posts') }}</a> |
             <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
             <a href="{{ route('role-user.index') }}">{{ __('Role Users') }}</a> |
             <a href="{{ route('privacies.index') }}">{{ __('Privacy') }}</a> |
+            <a href="{{ route('post-audit-logs.index') }}">{{ __('Post Audit Log') }}</a> |
+            <a href="{{ route('comment-audit-logs.index') }}">{{ __('Comment Audit Log') }}</a> |
+            <a href="{{ route('category-audit-logs.index') }}">{{ __('Category Audit Log') }}</a> |
+            <a href="{{ route('tag-audit-logs.index') }}">{{ __('Tag Audit Log') }}</a> |
             <a href="{{ route('email.index') }}">{{ __('Email') }}</a>
-
         </h2>
     </x-slot>
 
