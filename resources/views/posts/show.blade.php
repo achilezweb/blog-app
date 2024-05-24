@@ -11,6 +11,21 @@
         <span class="text-sm text-gray-600">
             Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }} | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}
         </span>
+        <div class="text-sm text-white">
+            @if(auth()->user()->likedPosts->contains($post->id))
+                <form action="{{ route('posts.unlike', $post) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Unlike</button>
+                </form>
+            @else
+                <form action="{{ route('posts.like', $post) }}" method="POST">
+                    @csrf
+                    <button type="submit">Like</button>
+                </form>
+            @endif
+            <p>{{ $post->likeCount() }} likes</p>
+        </div>
         <p class="text-sm text-gray-400">{{ $post->body }}</p>
         @if ($post->tags)
             <div class="text-white">Tag:</div>

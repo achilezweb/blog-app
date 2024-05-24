@@ -122,5 +122,20 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'tags'));
     }
 
+    public function like(Post $post)
+    {
+        $user = auth()->user(); //Auth::user();
+        $user->likedPosts()->syncWithoutDetaching([$post->id]);
+
+        return back()->with('success', 'You liked the post.');
+    }
+
+    public function unlike(Post $post)
+    {
+        $user = auth()->user(); //Auth::user();
+        $user->likedPosts()->detach($post->id);
+
+        return back()->with('success', 'You unliked the post.');
+    }
 
 }

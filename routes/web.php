@@ -41,6 +41,8 @@ Route::resource('posts', PostController::class);
 // auth, verified endpoints
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('posts.comments', CommentController::class);
+    Route::post('posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
+    Route::delete('posts/{post}/unlike', [PostController::class, 'unlike'])->name('posts.unlike');
 
 });
 

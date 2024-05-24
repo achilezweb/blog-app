@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Pivot\RoleUser;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -169,4 +170,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Post::class); //$posts = $user->posts;
     }
+
+    /**
+     * The likedPosts that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'post_user_likes');
+    }
+
+
 }

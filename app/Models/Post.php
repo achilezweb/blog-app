@@ -134,6 +134,21 @@ class Post extends Model
     }
 
     /**
+     * The likes  that belong to the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likes (): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'post_user_likes');
+    }
+
+    public function likeCount()
+    {
+        return $this->likes()->count();
+    }
+
+    /**
      * Always set the body field to convert text - html markdown
      *
      * @return string
