@@ -181,5 +181,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Post::class, 'post_user_likes');
     }
 
+    /**
+     * The sharedPosts that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function sharedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'post_user_shares');
+    }
 
 }

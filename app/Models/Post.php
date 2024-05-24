@@ -134,7 +134,7 @@ class Post extends Model
     }
 
     /**
-     * The likes  that belong to the Post
+     * The likes that belong to the Post
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -146,6 +146,22 @@ class Post extends Model
     public function likeCount()
     {
         return $this->likes()->count();
+    }
+
+    /**
+     * The shares that belong to the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function shares(): BelongsToMany
+    {
+        // return $this->hasMany(PostShare::class);
+        return $this->belongsToMany(User::class, 'post_user_shares');
+    }
+
+    public function shareCount()
+    {
+        return $this->shares()->count();
     }
 
     /**

@@ -119,6 +119,11 @@
                             </form>
                         @endif
                         <p>{{ $post->likeCount() }} likes</p>
+                        <form action="{{ route('posts.share', $post) }}" method="POST">
+                            @csrf
+                            <button type="submit">Share</button>
+                        </form>
+                        <p>{{ $post->shareCount() }} shares</p>
                     </div>
 
                     @can('delete', $post)

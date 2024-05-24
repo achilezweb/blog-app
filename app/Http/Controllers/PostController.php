@@ -138,4 +138,13 @@ class PostController extends Controller
         return back()->with('success', 'You unliked the post.');
     }
 
+    public function share(Post $post)
+    {
+        $user = auth()->user();
+        $user->sharedPosts()->syncWithoutDetaching([$post->id]);
+        // $post->shares()->create(['user_id' => $user->id()]); // Assuming users are logged in
+
+        return back()->with('success', 'Post shared successfully.');
+    }
+
 }
