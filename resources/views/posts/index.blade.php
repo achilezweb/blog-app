@@ -103,7 +103,7 @@
                         </ul>
                     @endif
                     <span class="text-sm text-gray-600">
-                        Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> Privacy: {{ $post->privacy->name }}
+                        Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}
                     </span>
 
                     @can('delete', $post)

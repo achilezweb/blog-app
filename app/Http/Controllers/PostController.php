@@ -55,6 +55,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post->increment('page_views');
+
+
         $comments = $post->comments()->latest()->with('user')->paginate(10);
         return view('posts.show', compact('post','comments'));
     }

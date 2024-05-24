@@ -9,7 +9,7 @@
 
         <div class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</div>
         <span class="text-sm text-gray-600">
-            Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }} Privacy: {{ $post->privacy->name }}
+            Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }} | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}
         </span>
         <p class="text-sm text-gray-400">{{ $post->body }}</p>
         @if ($post->tags)
