@@ -11,12 +11,12 @@ class UserPolicy
 
     public function manage(User $user)
     {
-        return $user->hasRole('admin') || $user->hasRole('superadmin');
+        //return $user->hasRole('admin') || $user->hasRole('superadmin');
     }
 
     public function manageSuperadmin(User $user)
     {
-        return $user->hasRole('superadmin');
+        //return $user->hasRole('superadmin');
     }
 
     public function viewAny(User $user)
@@ -37,6 +37,7 @@ class UserPolicy
     public function update(User $user, User $targetUser)
     {
         // Logic to authorize updating a user
+        return $user->hasRoles('superadmin') || ($user->hasRoles('admin') && !$targetUser->hasRoles('superadmin'));
     }
 
     public function delete(User $user, User $targetUser)

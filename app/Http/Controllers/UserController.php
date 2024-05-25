@@ -14,7 +14,17 @@ class UserController extends Controller
     public function index()
     {
         // Logic to fetch and display users
-        $users = User::latest()->paginate(10);
+        $query = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'superadmin');
+        })->latest(); //latest();
+
+        if (auth()->user()->hasRoles('superadmin')) {
+            $query = User::latest();
+        }
+
+        $users = $query->paginate(10);
+
+        // return $users;
         return view('users.index', compact('users'));
     }
 
@@ -48,14 +58,14 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // Gate::authorize('update', $user); //handled by UserPolicy@update
+        Gate::authorize('update', $user); //handled by UserPolicy@update
         // Logic to show user edit form
         return view('users.edit', compact('user'));
     }
 
     public function update(UserRequest $request, User $user)
     {
-        //Gate::authorize('update', $user); //handled by UserPolicy@update
+        Gate::authorize('update', $user); //handled by UserPolicy@update
         // Logic to update a user
         $validated = $request->validated();
 
@@ -85,14 +95,22 @@ class UserController extends Controller
             'query' => ['required', 'string', 'max:200'],
         ]);
 
-        $query = $request->input('query');
+        $searchTerm = $request->input('query');
 
-        // Perform the search query
-        $users = User::where('name', 'like', "%$query%")
-                     ->orWhere('email', 'like', "%$query%")
-                     ->orWhere('username', 'like', "%$query%")
-                     ->orWhere('photo', 'like', "%$query%")
-                     ->paginate(10);
+        $query = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'superadmin');
+        })->latest(); //latest();
+
+        if (auth()->user()->hasRoles('superadmin')) {
+            $query = User::latest();
+        }
+
+        $users = $query->when($searchTerm, function ($query, $searchTerm) {
+            return $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('email', 'like', '%' . $searchTerm . '%');
+            });
+        })->paginate(10);
 
         return view('users.index', compact('users'));
     }
