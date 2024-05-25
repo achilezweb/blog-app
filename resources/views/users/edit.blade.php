@@ -19,14 +19,32 @@
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-
                             <input type="password" name="password" id="password" class="block mt-1 w-full" placeholder="Enter Password" value="">
                             @error('password')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-
                             <input type="text" name="email" id="email" class="block mt-1 w-full" placeholder="Enter Email" value="{{ old('email') ?? $user->email }}" required>
                             @error('email')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                            <input type="text" name="username" id="username" class="block mt-1 w-full" placeholder="Enter Username" value="{{ old('username') ?? $user->username }}" >
+                            @error('username')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                            <input type="text" name="photo" id="photo" class="block mt-1 w-full" placeholder="Enter Photo" value="{{ old('photo') ?? $user->photo }}" >
+                            @error('photo')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                            <input type="text" name="active" id="active" class="block mt-1 w-full" placeholder="Active?" value="{{ old('active') ?? $user->active }}" >
+                            @error('active')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                            <input type="text" name="archive" id="archive" class="block mt-1 w-full" placeholder="Archived?" value="{{ old('archive') ?? $user->archive }}" >
+                            @error('archive')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                            <input type="text" name="email_verified_at" id="email_verified_at" class="block mt-1 w-full" placeholder="Email Verified at?" value="{{ old('email_verified_at') ?? $user->email_verified_at }}" >
+                            @error('email_verified_at')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

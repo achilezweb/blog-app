@@ -35,6 +35,11 @@ class UserRequest extends FormRequest
             'name' => ['required', 'string', 'max:200'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($userId)],
             'password' => $this->isMethod('post') ? 'required|string|min:6' : 'sometimes|nullable|string|min:6',
+            'username' => ['sometimes', 'nullable', 'string', 'max:200'],
+            'photo' => ['sometimes', 'nullable', 'string', 'max:200'],
+            'active' => ['sometimes', 'nullable', 'string', 'max:200'],
+            'archive' => ['sometimes', 'nullable', 'string', 'max:200'],
+            'email_verified_at' => ['sometimes', 'nullable', 'string', 'max:200'],
         ];
     }
 }

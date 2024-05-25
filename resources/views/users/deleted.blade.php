@@ -18,6 +18,11 @@
                         <tr class="bg-gray-100">
                             <th class="px-4 py-2">Name</th>
                             <th class="px-4 py-2">Email</th>
+                            <th class="px-4 py-2">Username</th>
+                            <th class="px-4 py-2">Photo</th>
+                            <th class="px-4 py-2">Active</th>
+                            <th class="px-4 py-2">Archive</th>
+                            <th class="px-4 py-2">Email Verified At</th>
                             <th class="px-4 py-2">Deleted At</th>
                             <th class="px-4 py-2">Actions</th>
                         </tr>
@@ -27,6 +32,11 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $user->name }}</td>
                                 <td class="border px-4 py-2">{{ $user->email }}</td>
+                                <td class="border px-4 py-2">{{ $user->username }}</td>
+                                <td class="border px-4 py-2">{{ $user->photo }}</td>
+                                <td class="border px-4 py-2">{{ $user->active }}</td>
+                                <td class="border px-4 py-2">{{ $user->archive }}</td>
+                                <td class="border px-4 py-2">{{ $user->email_verified_at }}</td>
                                 <td class="border px-4 py-2">{{ $user->deleted_at->toFormattedDateString() }}</td>
                                 <td class="border px-4 py-2">
                                     <form action="{{ route('users.restore', $user->id) }}" method="POST">

@@ -43,6 +43,7 @@ class UserPolicy
     public function delete(User $user, User $targetUser)
     {
         // Logic to authorize deleting a user
+        return $user->hasRoles('superadmin') || ($user->hasRoles('admin') && !$targetUser->hasRoles('superadmin'));
     }
 
 }
