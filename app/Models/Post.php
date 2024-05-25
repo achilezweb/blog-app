@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Milon\Barcode\DNS1D;
 use Illuminate\Support\Str;
 use App\Models\Pivot\TagPost;
 use Illuminate\Database\Eloquent\Model;
@@ -64,6 +65,7 @@ class Post extends Model
             ]);
 
             $post->generateAndSaveQrCode();
+            $post->generateBarcode();
         });
 
         // When a post is updated
@@ -194,10 +196,17 @@ class Post extends Model
         Storage::disk('public')->put($qrCodePath, $qrCode);
 
         // Update the user's QR code path attribute if necessary
-        $this->qr_code_path = $qrCodePath;
+        $this->qrcodes = $qrCodePath;
         $this->save();
 
         return $qrCodePath;
+    }
+
+    public function generateBarcode()
+    {
+        $barcode = new DNS1D();
+        $this->barcode = $barcode->getBarcodePNG($this->id, "C39");
+        $this->save();
     }
 
     /**

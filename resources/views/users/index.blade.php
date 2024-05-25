@@ -96,8 +96,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('users.show', $user) }}" class="text-indigo-600 hover:text-indigo-900">
-                                        <img src="{{ asset('storage/' . $user->qr_code_path) }}" alt="User QR Code" width="200">
-                                    </a>
+                                        <img src="{{ asset('storage/' . $user->qrcodes ) }}" alt="User QR Code" width="200">
+                                    </a><br>
+                                    <img src="data:image/png;base64,{{ $user->barcode }}" alt="User Barcode">
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('users.show', $user) }}" class="text-indigo-600 hover:text-indigo-900">{{ $user->email_verified_at }}</a>

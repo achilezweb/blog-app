@@ -46,7 +46,9 @@
                             <dd class="mt-1 text-sm text-gray-900">{{ $user->qrCode }}</dd> {{-- Generated from user model --}}
                             <hr>
                             <div>
-                                <img src="{{ asset('storage/' . $user->qr_code_path) }}" alt="User QR Code" width="300"> {{-- Saved in storage --}}
+                                <img src="{{ asset('storage/' . $user->qrcodes) }}" alt="User QR Code" width="300"> {{-- Saved in storage --}}
+                                <br>
+                                <img src="data:image/png;base64,{{ $user->barcode }}" alt="User Barcode">
                             </div>
                         </div>
                         <!-- Add additional fields as needed -->

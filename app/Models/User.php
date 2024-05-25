@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
+use Milon\Barcode\DNS1D;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -80,6 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
         // Handle QR code generation on creation
         static::created(function ($user) {
             $user->generateAndSaveQrCode();
+            $user->generateBarcode();
         });
 
         // Handle QR code regeneration on updates
@@ -183,10 +185,17 @@ class User extends Authenticatable implements MustVerifyEmail
         Storage::disk('public')->put($qrCodePath, $qrCode);
 
         // Update the user's QR code path attribute if necessary
-        $this->qr_code_path = $qrCodePath;
+        $this->qrcodes = $qrCodePath;
         $this->save();
 
         return $qrCodePath;
+    }
+
+    public function generateBarcode()
+    {
+        $barcode = new DNS1D();
+        $this->barcode = $barcode->getBarcodePNG($this->id, "C39");
+        $this->save();
     }
 
     /**

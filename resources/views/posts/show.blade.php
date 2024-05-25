@@ -10,7 +10,8 @@
         <div class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</div>
         <p class="text-sm text-gray-400">{{ $post->body }}</p>
         <div class="text-white">QR Codes:
-            <img src="{{ asset('storage/' . $post->qr_code_path) }}" alt="User QR Code" width="100">
+            <img src="{{ asset('storage/' . $post->qrcodes ) }}" alt="User QR Code" width="100"><br>
+            <img src="data:image/png;base64,{{ $post->barcode }}" alt="Post Barcode">
         </div>
         <span class="text-sm text-gray-600">
             Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }} | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}

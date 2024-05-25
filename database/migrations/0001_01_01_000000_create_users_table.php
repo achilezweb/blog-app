@@ -21,7 +21,8 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->boolean('archive')->default(false);
             $table->string('photo')->nullable()->default('profiles/users/default.svg');
-            $table->string('qr_code_path')->nullable();
+            $table->string('qrcodes')->nullable();
+            $table->string('barcode')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
