@@ -19,7 +19,36 @@
                             <dt class="text-sm font-medium text-gray-500">Email</dt>
                             <dd class="mt-1 text-sm text-gray-900">{{ $user->email }}</dd>
                         </div>
-
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Username</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $user->username }}</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Photo</dt>
+                            <dd class="mt-1 text-sm text-gray-900">
+                                <img src="{{ asset('storage/' . $user->photo) }}" alt="User Profile Photo" width="100">
+                            </dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Active</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $user->active }}</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Archive</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $user->archive }}</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Email Verified At</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $user->email_verified_at }}</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">QR Code</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $user->qrCode }}</dd> {{-- Generated from user model --}}
+                            <hr>
+                            <div>
+                                <img src="{{ asset('storage/' . $user->qr_code_path) }}" alt="User QR Code" width="300"> {{-- Saved in storage --}}
+                            </div>
+                        </div>
                         <!-- Add additional fields as needed -->
                     </dl>
                 </div>

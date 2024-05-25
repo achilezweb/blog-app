@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Pivot\RoleUser;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -74,6 +76,20 @@ class User extends Authenticatable implements MustVerifyEmail
 
             $user->username = $username;
         });
+
+        // Handle QR code generation on creation
+        static::created(function ($user) {
+            $user->generateAndSaveQrCode();
+        });
+
+        // Handle QR code regeneration on updates
+        static::updated(function ($user) {
+            // Optionally, check if specific attributes have changed if needed
+            if ($user->isDirty('email')) { // Assuming email changes affect the QR code
+                // $user->generateAndSaveQrCode(); // mo laag
+            }
+        });
+
     }
 
     /**
@@ -139,6 +155,38 @@ class User extends Authenticatable implements MustVerifyEmail
     public function assignRole($role)
     {
         $this->roles()->syncWithoutDetaching(Role::where('name', $role)->first());
+    }
+
+    /**
+     * Generate a QR code that represents the User's unique identifier or any other relevant data.
+     *
+     * @return string
+     */
+    public function getQrCodeAttribute()
+    {
+        $data = $this->email;  // Or any other data you wish to encode
+        return QrCode::size(200)->generate($data); //called from blade {{ $user->qrCode }}
+    }
+
+    /**
+     * Generate and save a QR code image that represents the User's unique identifier or any other relevant data.
+     * Called from static::created $user->generateAndSaveQrCode();
+     */
+    public function generateAndSaveQrCode()
+    {
+        $data = $this->email;  // Or any other data you wish to encode
+        $qrCodePath = 'qrcodes/users/' . $this->id . '.svg';
+
+        $qrCode = QrCode::format('svg')->size(100)->generate($data);
+
+        // Save the QR code to the storage
+        Storage::disk('public')->put($qrCodePath, $qrCode);
+
+        // Update the user's QR code path attribute if necessary
+        $this->qr_code_path = $qrCodePath;
+        $this->save();
+
+        return $qrCodePath;
     }
 
     /**

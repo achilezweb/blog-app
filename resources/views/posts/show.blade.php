@@ -8,6 +8,10 @@
         <h1 class="text-2xl font-semibold block text-white">Posts:</h1>
 
         <div class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</div>
+        <p class="text-sm text-gray-400">{{ $post->body }}</p>
+        <div class="text-white">QR Codes:
+            <img src="{{ asset('storage/' . $post->qr_code_path) }}" alt="User QR Code" width="100">
+        </div>
         <span class="text-sm text-gray-600">
             Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} | Posted by {{ $post->user->name }} | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}
         </span>

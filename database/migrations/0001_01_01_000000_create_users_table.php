@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('username')->unique()->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('archive')->default(false);
-            $table->string('photo')->nullable()->default('storage/profile-photos/default.jpg');
+            $table->string('photo')->nullable()->default('profiles/users/default.svg');
+            $table->string('qr_code_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

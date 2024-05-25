@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use App\Models\Pivot\TagPost;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -60,6 +62,8 @@ class Post extends Model
                 'action' => 'created',
                 'changes' => json_encode(['all' => $post->toArray()]),
             ]);
+
+            $post->generateAndSaveQrCode();
         });
 
         // When a post is updated
@@ -163,6 +167,37 @@ class Post extends Model
     public function shareCount()
     {
         return $this->shares()->count();
+    }
+
+    /**
+     * Generate a QR code that represents the User's unique identifier or any other relevant data.
+     *
+     * @return string
+     */
+    public function getQrCodeAttribute()
+    {
+        $data = $this->email;  // Or any other data you wish to encode
+        return QrCode::size(200)->generate($data); //called from blade {{ $user->qrCode }}
+    }
+
+    /**
+     * Generate and save a QR code image that represents the User's unique identifier or any other relevant data.
+     * Called from static::created $user->generateAndSaveQrCode();
+     */
+    public function generateAndSaveQrCode()
+    {
+        $url = route('posts.show', $this->id); // Assuming you want to encode the URL to the post
+        $qrCodePath = 'qrcodes/posts/' . $this->id . '.svg';
+        $qrCode = QrCode::format('svg')->size(100)->generate($url);
+
+        // Save the QR code to the storage
+        Storage::disk('public')->put($qrCodePath, $qrCode);
+
+        // Update the user's QR code path attribute if necessary
+        $this->qr_code_path = $qrCodePath;
+        $this->save();
+
+        return $qrCodePath;
     }
 
     /**
