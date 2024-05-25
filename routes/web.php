@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // auth, verified, admin, superadmin endpoints
 Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function () {
 
+    Route::get('/role-user/search', [RoleUserController::class, 'search'])->name('role-user.search');
     Route::resource('role-user', RoleUserController::class)->except(['destroy']);
     Route::delete('/role-user/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
         ->name('role-user.destroy');
@@ -60,8 +61,10 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
         ->name('categories.deleted'); //should be above the resource (using softdelete)
     Route::post('/categories/restore/{id}', [CategoryController::class, 'restore'])
         ->name('categories.restore'); //should be above the resource (using softdelete)
+    Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
     Route::resource('categories', CategoryController::class);
 
+    Route::get('/category-post/search', [CategoryPostController::class, 'search'])->name('category-post.search');
     Route::resource('category-post', CategoryPostController::class);
     Route::delete('/category-post/{postId}/{categoryId}', [CategoryPostController::class, 'destroy'])
         ->name('category-post.destroy');
@@ -70,28 +73,40 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
         ->name('tags.deleted'); //should be above the resource (using softdelete)
     Route::post('/tags/restore/{id}', [TagController::class, 'restore'])
         ->name('tags.restore'); //should be above the resource (using softdelete)
+    Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('tags', TagController::class);
 
+    Route::get('/tag-post/search', [TagPostController::class, 'search'])->name('tag-post.search');
     Route::resource('tag-post', TagPostController::class);
     Route::delete('/tag-post/{postId}/{tagId}', [TagPostController::class, 'destroy'])
         ->name('tag-post.destroy');
 
+    Route::get('/roles/search', [RoleController::class, 'search'])->name('roles.search');
     Route::resource('roles', RoleController::class);
 
     Route::get('/users/deleted', [UserController::class, 'showDeleted'])
         ->name('users.deleted'); //should be above the resource otherwise not found (using softdelete)
     Route::post('/users/restore/{id}', [UserController::class, 'restore'])
         ->name('users.restore'); //should be above the resource otherwise not found (using softdelete)
+    Route::get('/users/search', [UserController::class, 'search'])->name('users.search');
     Route::resource('users', UserController::class);
 
+    Route::get('/privacies/search', [PrivacyController::class, 'search'])->name('privacies.search');
     Route::resource('privacies', PrivacyController::class);
 
+    Route::get('/post-audit-logs/search', [PostAuditLogController::class, 'search'])->name('post-audit-logs.search');
     Route::get('/post-audit-logs', [PostAuditLogController::class, 'index'])
         ->name('post-audit-logs.index');
+
+    Route::get('/comment-audit-logs/search', [CommentAuditLogController::class, 'search'])->name('comment-audit-logs.search');
     Route::get('/comment-audit-logs', [CommentAuditLogController::class, 'index'])
         ->name('comment-audit-logs.index');
+
+    Route::get('/category-audit-logs/search', [CategoryAuditLogController::class, 'search'])->name('category-audit-logs.search');
     Route::get('/category-audit-logs', [CategoryAuditLogController::class, 'index'])
         ->name('category-audit-logs.index');
+
+    Route::get('/tag-audit-logs/search', [TagAuditLogController::class, 'search'])->name('tag-audit-logs.search');
     Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
         ->name('tag-audit-logs.index');
 

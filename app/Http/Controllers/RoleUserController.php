@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoleUserRequest;
 use App\Http\Requests\UpdateRoleUserRequest;
-use App\Models\User;
-use App\Models\Role;
 
 class RoleUserController extends Controller
 {
@@ -98,4 +99,25 @@ class RoleUserController extends Controller
 
         return redirect()->route('role-user.index')->with('success', 'RoleUser removed successfully.');
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $searchTerm = $request->input('query');
+
+        // Perform the search query User model and eager load the 'roles' relationship
+        $roleUsers = User::whereHas('roles', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%");
+        })->orWhere('name', 'like', "%{$searchTerm}%")
+          ->orWhere('email', 'like', "%{$searchTerm}%")
+          ->with('roles')
+          ->paginate(10);
+
+        return view('role-user.index', compact('roleUsers'));
+    }
+
 }

@@ -63,4 +63,31 @@ class CommentAuditLogController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $searchTerm = $request->input('query');
+
+        // Perform the search query User model and eager load the 'roles' relationship
+        $logs = CommentAuditLog::whereHas('comment', function ($query) use ($searchTerm) {
+            $query->where('body', 'like', "%{$searchTerm}%");
+        })->orwhereHas('updater', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('email', 'like', "%{$searchTerm}%");
+        })->orWhere('action', 'like', "%{$searchTerm}%")
+          ->orWhere('changes', 'like', "%{$searchTerm}%")
+        //   ->with(['comment','updater'])
+          ->paginate(10);
+
+        // $logs = CommentAuditLog::Where('action', 'like', "%{$searchTerm}%")
+        //   ->orWhere('changes', 'like', "%{$searchTerm}%")
+        //   ->paginate(10);
+
+        return view('comment-audit-logs.index', compact('logs'));
+    }
+
 }

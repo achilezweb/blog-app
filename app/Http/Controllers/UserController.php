@@ -79,6 +79,24 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $query = $request->input('query');
+
+        // Perform the search query
+        $users = User::where('name', 'like', "%$query%")
+                     ->orWhere('email', 'like', "%$query%")
+                     ->orWhere('username', 'like', "%$query%")
+                     ->orWhere('photo', 'like', "%$query%")
+                     ->paginate(10);
+
+        return view('users.index', compact('users'));
+    }
+
     public function showDeleted()
     {
         $users = User::onlyTrashed()->paginate(10);

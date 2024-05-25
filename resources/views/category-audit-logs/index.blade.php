@@ -2,6 +2,17 @@
 
 <x-app-layout>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+        <div class="">
+            <form action="{{ route('category-audit-logs.search') }}" method="GET">
+                <input type="text" name="query" id="query" placeholder="Search..." value="{{ old('query') }}" required>
+                @error('query')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <x-primary-button type="submit">Search</x-primary-button>
+            </form>
+        </div>
+
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200">
                 <h1 class="text-xl font-semibold">Category Audit Logs</h1>

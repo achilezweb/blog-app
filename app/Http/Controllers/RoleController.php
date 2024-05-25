@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -73,4 +74,21 @@ class RoleController extends Controller
         $role->delete();
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $query = $request->input('query');
+
+        // Perform the search query
+        $roles = Role::where('name', 'like', "%$query%")
+                     ->orWhere('description', 'like', "%$query%")
+                     ->paginate(10);
+
+        return view('roles.index', compact('roles'));
+    }
+
 }

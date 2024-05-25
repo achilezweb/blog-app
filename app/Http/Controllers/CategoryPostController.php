@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCategoryPostRequest;
 use App\Http\Requests\UpdateCategoryPostRequest;
 
@@ -87,4 +88,25 @@ class CategoryPostController extends Controller
 
         return redirect()->route('category-post.index')->with('success', 'CategoryPost removed successfully.');
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $searchTerm = $request->input('query');
+
+        // Perform the search query User model and eager load the 'roles' relationship
+        $categoryPosts = Post::whereHas('categories', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%");
+        })->orWhere('title', 'like', "%{$searchTerm}%")
+          ->orWhere('body', 'like', "%{$searchTerm}%")
+          ->with('categories')
+          ->paginate(10);
+
+        return view('category-post.index', compact('categoryPosts'));
+    }
+
 }

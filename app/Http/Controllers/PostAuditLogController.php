@@ -63,4 +63,32 @@ class PostAuditLogController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $searchTerm = $request->input('query');
+
+        // Perform the search query User model and eager load the 'roles' relationship
+        $logs = PostAuditLog::whereHas('post', function ($query) use ($searchTerm) {
+            $query->where('title', 'like', "%{$searchTerm}%")
+                ->orWhere('body', 'like', "%{$searchTerm}%");
+        })->orwhereHas('updater', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('email', 'like', "%{$searchTerm}%");
+        })->orWhere('action', 'like', "%{$searchTerm}%")
+          ->orWhere('changes', 'like', "%{$searchTerm}%")
+        //   ->with(['post','updater'])
+          ->paginate(10);
+
+        // $logs = PostAuditLog::Where('action', 'like', "%{$searchTerm}%")
+        //   ->orWhere('changes', 'like', "%{$searchTerm}%")
+        //   ->paginate(10);
+
+        return view('post-audit-logs.index', compact('logs'));
+    }
+
 }

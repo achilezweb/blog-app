@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
+use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
@@ -70,6 +71,22 @@ class TagController extends Controller
         $tag->delete();
         return redirect()->route('tags.index')->with('success', 'Tag deleted successfully.');
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $query = $request->input('query');
+
+        // Perform the search query
+        $tags = Tag::where('name', 'like', "%$query%")
+                     ->paginate(10);
+
+        return view('tags.index', compact('tags'));
+    }
+
     public function showDeleted()
     {
         $tags = Tag::onlyTrashed()->paginate(10);

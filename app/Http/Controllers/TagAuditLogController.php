@@ -63,4 +63,31 @@ class TagAuditLogController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $searchTerm = $request->input('query');
+
+        // Perform the search query User model and eager load the 'roles' relationship
+        $logs = TagAuditLog::whereHas('tag', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%");
+        })->orwhereHas('updater', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('email', 'like', "%{$searchTerm}%");
+        })->orWhere('action', 'like', "%{$searchTerm}%")
+          ->orWhere('changes', 'like', "%{$searchTerm}%")
+        //   ->with(['tag','updater'])
+          ->paginate(10);
+
+        // $logs = TagAuditLog::Where('action', 'like', "%{$searchTerm}%")
+        //   ->orWhere('changes', 'like', "%{$searchTerm}%")
+        //   ->paginate(10);
+
+        return view('tag-audit-logs.index', compact('logs'));
+    }
+
 }

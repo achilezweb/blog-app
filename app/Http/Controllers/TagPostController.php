@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Http\Requests\StoreTagPostRequest;
 use App\Http\Requests\UpdateTagPostRequest;
+use Illuminate\Http\Request;
 
 class TagPostController extends Controller
 {
@@ -87,4 +88,24 @@ class TagPostController extends Controller
 
         return redirect()->route('tag-post.index')->with('success', 'TagPost removed successfully.');
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $searchTerm = $request->input('query');
+
+        // Perform the search query User model and eager load the 'roles' relationship
+        $tagPosts = Post::whereHas('tags', function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%");
+        })->orWhere('title', 'like', "%{$searchTerm}%")
+          ->orWhere('body', 'like', "%{$searchTerm}%")
+          ->with('tags')
+          ->paginate(10);
+
+        return view('tag-post.index', compact('tagPosts'));
+    }
+
 }

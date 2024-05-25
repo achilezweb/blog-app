@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Privacy;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePrivacyRequest;
 use App\Http\Requests\UpdatePrivacyRequest;
-use App\Models\Privacy;
 
 class PrivacyController extends Controller
 {
@@ -67,4 +68,21 @@ class PrivacyController extends Controller
         $privacy->delete();
         return redirect()->route('privacies.index')->with('success', 'Privacy deleted successfully.');
     }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $query = $request->input('query');
+
+        // Perform the search query
+        $privacies = Privacy::where('name', 'like', "%$query%")
+                     ->orWhere('description', 'like', "%$query%")
+                     ->paginate(10);
+
+        return view('privacies.index', compact('privacies'));
+    }
+
 }

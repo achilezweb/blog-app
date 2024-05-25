@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\CategoryAuditLog;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -78,6 +79,22 @@ class CategoryController extends Controller
 
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+    }
+
+    public function search(Request $request){
+
+        $data = $request->validate([
+            'query' => ['required', 'string', 'max:200'],
+        ]);
+
+        $query = $request->input('query');
+
+        // Perform the search query
+        $categories = Category::where('name', 'like', "%$query%")
+                     ->orWhere('description', 'like', "%$query%")
+                     ->paginate(10);
+
+        return view('categories.index', compact('categories'));
     }
 
     public function showDeleted()
