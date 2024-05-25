@@ -28,6 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('page_views')->default(0);
             $table->foreignIdFor(Privacy::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -106,18 +106,20 @@
                         Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}
                     </span>
                     <div class="text-sm text-white">
-                        @if(auth()->user()->likedPosts->contains($post->id))
-                            <form action="{{ route('posts.unlike', $post) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Unlike</button>
-                            </form>
-                        @else
-                            <form action="{{ route('posts.like', $post) }}" method="POST">
-                                @csrf
-                                <button type="submit">Like</button>
-                            </form>
-                        @endif
+                        @auth
+                            @if(auth()->user()->likedPosts->contains($post->id))
+                                <form action="{{ route('posts.unlike', $post) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">Unlike</button>
+                                </form>
+                            @else
+                                <form action="{{ route('posts.like', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Like</button>
+                                </form>
+                            @endif
+                        @endauth
                         <p>{{ $post->likeCount() }} likes</p>
                         <form action="{{ route('posts.share', $post) }}" method="POST">
                             @csrf

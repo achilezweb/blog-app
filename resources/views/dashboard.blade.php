@@ -9,6 +9,7 @@
             <a href="{{ route('tag-post.index') }}">{{ __('Tag Posts') }}</a> |
             <a href="{{ route('roles.index') }}">{{ __('Roles') }}</a> |
             <a href="{{ route('role-user.index') }}">{{ __('Role Users') }}</a> |
+            <a href="{{ route('users.index') }}">{{ __('Users') }}</a> |
             <a href="{{ route('privacies.index') }}">{{ __('Privacy') }}</a> |
             <a href="{{ route('post-audit-logs.index') }}">{{ __('Post Audit Log') }}</a> |
             <a href="{{ route('comment-audit-logs.index') }}">{{ __('Comment Audit Log') }}</a> |

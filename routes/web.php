@@ -17,6 +17,7 @@ use App\Http\Controllers\PostAuditLogController;
 use App\Http\Controllers\CommentAuditLogController;
 use App\Jobs\SendEmailJob;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +41,7 @@ Route::resource('posts', PostController::class);
 
 // auth, verified endpoints
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::resource('posts.comments', CommentController::class);
     Route::post('posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
     Route::delete('posts/{post}/unlike', [PostController::class, 'unlike'])->name('posts.unlike');
@@ -49,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // auth, verified, admin, superadmin endpoints
 Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function () {
+
     Route::resource('role-user', RoleUserController::class)->except(['destroy']);
     Route::delete('/role-user/{userId}/{roleId}', [RoleUserController::class, 'destroy'])
         ->name('role-user.destroy');
@@ -74,6 +77,13 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
         ->name('tag-post.destroy');
 
     Route::resource('roles', RoleController::class);
+
+    Route::get('/users/deleted', [UserController::class, 'showDeleted'])
+        ->name('users.deleted'); //should be above the resource otherwise not found (using softdelete)
+    Route::post('/users/restore/{id}', [UserController::class, 'restore'])
+        ->name('users.restore'); //should be above the resource otherwise not found (using softdelete)
+    Route::resource('users', UserController::class);
+
     Route::resource('privacies', PrivacyController::class);
 
     Route::get('/post-audit-logs', [PostAuditLogController::class, 'index'])

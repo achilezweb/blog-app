@@ -72,7 +72,7 @@ class RoleUserController extends Controller
         $roles = Role::find($request->role_id);
 
         $roleHasSuperAdmin = $roles->contains(function ($role) {
-            return $role['name'] === 'superadmin';
+            return $role['name'] === 'superadmin'; //$role field has superadmin
         });
 
         // Rules: Prevent admins from creating or assigning the superadmin role

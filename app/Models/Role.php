@@ -28,4 +28,11 @@ class Role extends Model
         // return $this->belongsToMany(User::class)->withTimestamps();
         return $this->belongsToMany(User::class)->using(RoleUser::class);
     }
+
+    // Local scope to query roles by name
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', $name);
+    }
+
 }

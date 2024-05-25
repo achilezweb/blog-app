@@ -122,6 +122,20 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'tags'));
     }
 
+    public function showDeleted()
+    {
+        $posts = Post::onlyTrashed()->paginate(10);
+        return view('posts.deleted', compact('posts'));
+    }
+
+    public function restore($id)
+    {
+        $post = Post::onlyTrashed()->findOrFail($id);
+        $post->restore();
+
+        return redirect()->route('posts.deleted')->with('success', 'Post restored successfully.');
+    }
+
     public function like(Post $post)
     {
         $user = auth()->user(); //Auth::user();
