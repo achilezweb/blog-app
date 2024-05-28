@@ -32,6 +32,7 @@ class Post extends Model
         'active',
         'archive',
         'privacy_id',
+        'is_pinned',
     ];
 
     // protected $guarded = ['id'];

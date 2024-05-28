@@ -27,6 +27,7 @@ return new class extends Migration
             $table->boolean('archive')->default(false);
             $table->unsignedBigInteger('page_views')->default(0);
             $table->foreignIdFor(Privacy::class)->constrained()->cascadeOnDelete();
+            $table->boolean('is_pinned')->default(false);
             $table->string('qrcodes')->nullable();
             $table->string('barcode')->nullable();
             $table->timestamps();

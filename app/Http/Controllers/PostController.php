@@ -18,7 +18,13 @@ class PostController extends Controller
     public function index()
     {
         // $posts = Post::latest()->with('user')->with('category')->paginate(10);
-        $posts = Post::latest()->with('user')->paginate(10);
+        // $posts = Post::latest()->with('user')->paginate(10);
+
+        // Fetch posts, prioritizing pinned posts
+        $posts = Post::orderBy('is_pinned', 'desc') // Pinned posts first
+            ->orderBy('created_at', 'desc') // Then by creation date
+            ->paginate(10); // Adjust pagination as needed
+
         $tags = Tag::all(); // Fetch all tags
         $categories = Category::all(); // Fetch all categories
         return view('posts.index', compact('posts', 'tags', 'categories'));
@@ -159,6 +165,18 @@ class PostController extends Controller
         // $post->shares()->create(['user_id' => $user->id()]); // Assuming users are logged in
 
         return back()->with('success', 'Post shared successfully.');
+    }
+
+    public function pin(Post $post)
+    {
+        $post->update(['is_pinned' => true]);
+        return redirect()->back()->with('success', 'Post pinned successfully.');
+    }
+
+    public function unpin(Post $post)
+    {
+        $post->update(['is_pinned' => false]);
+        return redirect()->back()->with('success', 'Post unpinned successfully.');
     }
 
 }

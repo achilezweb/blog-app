@@ -18,6 +18,7 @@ use App\Http\Controllers\CommentAuditLogController;
 use App\Jobs\SendEmailJob;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\UserController;
+// use App\Http\Controllers\ChatgptController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,10 +44,11 @@ Route::resource('posts', PostController::class);
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('posts.comments', CommentController::class);
-    Route::post('posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
-    Route::delete('posts/{post}/unlike', [PostController::class, 'unlike'])->name('posts.unlike');
-    Route::post('posts/{post}/share', [PostController::class, 'share'])->name('posts.share');
-
+    Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
+    Route::delete('/posts/{post}/unlike', [PostController::class, 'unlike'])->name('posts.unlike');
+    Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('posts.share');
+    Route::post('/posts/{post}/pin', [PostController::class, 'pin'])->name('posts.pin');
+    Route::post('/posts/{post}/unpin', [PostController::class, 'unpin'])->name('posts.unpin');
 });
 
 // auth, verified, admin, superadmin endpoints
@@ -109,6 +111,8 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::get('/tag-audit-logs/search', [TagAuditLogController::class, 'search'])->name('tag-audit-logs.search');
     Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
         ->name('tag-audit-logs.index');
+
+    // Route::resource('chatgpts', ChatgptController::class);
 
     Route::resource('email', EmailController::class);
 

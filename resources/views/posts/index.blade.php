@@ -84,7 +84,10 @@
         <ul class="divide-y">
             @foreach($posts as $post)
                 <li class="py-4 px-2">
-                    <a href="{{  route('posts.show', $post) }}" class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</a>
+
+                    <a href="{{  route('posts.show', $post) }}" class="text-xl font-semibold block text-white">
+                        {{ $post->is_pinned ? 'Pinned:' : '' }} {{ $post->id }} {{ $post->title }}
+                    </a>
                     <p class="text-sm text-gray-400">{{ $post->body }}</p>
                     <div class="text-white">QR Codes:
                         <img src="{{ asset('storage/' . $post->qrcodes ) }}" alt="User QR Code" width="100"><br>
@@ -125,11 +128,26 @@
                             @endif
                         @endauth
                         <p>{{ $post->likeCount() }} likes</p>
-                        <form action="{{ route('posts.share', $post) }}" method="POST">
-                            @csrf
-                            <button type="submit">Share</button>
-                        </form>
+                        @auth
+                            <form action="{{ route('posts.share', $post) }}" method="POST">
+                                @csrf
+                                <button type="submit">Share</button>
+                            </form>
+                        @endauth
                         <p>{{ $post->shareCount() }} shares</p>
+                        @auth
+                            @if($post->is_pinned)
+                                <form action="{{ route('posts.unpin', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Unpin Post</button>
+                                </form>
+                            @else
+                                <form action="{{ route('posts.pin', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Pin Post</button>
+                                </form>
+                            @endif
+                        @endauth
                     </div>
 
                     @can('delete', $post)
