@@ -18,7 +18,7 @@
         <h1 class="text-2xl font-semibold block text-white py-6">Posts:</h1>
 
         @auth
-            <form action="{{ route('posts.store') }}" method="POST">
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" value="{{ old('title') }}" required autofocus>
                 @error('title')
@@ -81,6 +81,7 @@
                 <input type="text" placeholder="Enter Location" id="location_name" name="location_name" value="{{ old('location_name') }}">
                 <input type="text" placeholder="Enter Latitude" id="latitude" name="latitude" value="{{ old('latitude') }}">
                 <input type="text" placeholder="Enter Longitude" id="longitude" name="longitude" value="{{ old('longitude') }}">
+                <input type="file" name="image">
 
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
@@ -133,6 +134,9 @@
                     @endif
                     @if($post->location_name)
                         <p class="text-white">Location: {{ $post->location_name }} ({{ $post->latitude }}, {{ $post->longitude }})</p>
+                    @endif
+                    @if ($post->image)
+                        <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" style="width:100%;">
                     @endif
                     <span class="text-sm text-gray-600">
                         Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}

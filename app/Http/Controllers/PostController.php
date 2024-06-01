@@ -10,6 +10,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -56,6 +57,11 @@ class PostController extends Controller
         // Parse mentions in the post body
         $validatedData['body'] = $this->parseMentions($validatedData['body']);
 
+        // check if there's a file to upload
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $validatedData['image'] = $request->image->store('posts/users', 'public');
+        }
+
         $post = Post::create($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
@@ -100,10 +106,44 @@ class PostController extends Controller
         // Add user_id to the validated data
         $validatedData['user_id'] = $request->user()->id;
 
+        // Parse mentions in the post body
+        $validatedData['body'] = $this->parseMentions($validatedData['body']);
+
+        // check if there's a file to upload
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Delete the old image if exists
+            if ($post->image) {
+                if (Storage::disk('public')->exists($post->image)) {
+                    Storage::disk('public')->delete($post->image);
+                }
+            }
+            // Store the new image and update image path in validated data
+            $validatedData['image'] = $request->image->store('posts/users', 'public');
+        }
+
         $post->update($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
         $post->taggedUsers()->sync($request->tagged_users);
+        return to_route('posts.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Post $post)
+    {
+        Gate::authorize('delete', $post); //handled by PostPolicy@delete
+
+        //delete if there is an image
+        if ($post->image) {
+            if (Storage::disk('public')->exists($post->image)) {
+                Storage::disk('public')->delete($post->image);
+            }
+        }
+
+        $post->delete();
+
         return to_route('posts.index');
     }
 
@@ -126,18 +166,6 @@ class PostController extends Controller
         }
 
         return $body;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        Gate::authorize('delete', $post); //handled by PostPolicy@delete
-
-        $post->delete();
-
-        return to_route('posts.index');
     }
 
     public function search(Request $request){

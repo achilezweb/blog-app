@@ -8,14 +8,14 @@
         <h1 class="text-2xl font-semibold block text-white">Posts:</h1>
 
         @can('update', $post)
-            <form action="{{ route('posts.update', $post) }}" method="POST">
+            <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="text"name="title" id="title" class="w-full" placeholder="Enter Title" value="{{ old('title') ?? $post->title }}" required>
                 @error('title')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
-                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required>{{ old('body') ?? $post->body }}</textarea>
+                <textarea name="body" id="body" cols="30" rows="5" class="w-full" placeholder="Enter Description" required>{{ old('body') ?? strip_tags($post->body) }}</textarea>
                 @error('body')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -73,6 +73,8 @@
                 <input type="text" placeholder="Enter Location" id="location_name" name="location_name" value="{{ old('location_name') ?? $post->location_name }}">
                 <input type="text" placeholder="Enter Latitude" id="latitude" name="latitude" value="{{ old('latitude') ?? $post->latitude }}">
                 <input type="text" placeholder="Enter Longitude" id="longitude" name="longitude" value="{{ old('longitude') ?? $post->longitude }}">
+                <input type="file" name="image">
+                <img src="{{ asset('storage/' . $post->image) }}" alt="Current Image" style="width: 100px;">
 
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)

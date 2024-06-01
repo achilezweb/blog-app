@@ -36,6 +36,7 @@ class Post extends Model
         'location_name',
         'latitude',
         'longitude',
+        'image',
     ];
 
     // protected $guarded = ['id'];

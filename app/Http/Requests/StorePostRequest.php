@@ -32,6 +32,7 @@ class StorePostRequest extends FormRequest
             'location_name' => ['nullable', 'string'],
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
+            'image' => ['nullable', 'image', 'max:2048'], // 2MB Max
         ];
     }
 }

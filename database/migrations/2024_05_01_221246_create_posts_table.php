@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('location_name')->nullable(); // A textual name of the location
             $table->decimal('latitude', 10, 8)->nullable(); // Latitude
             $table->decimal('longitude', 11, 8)->nullable(); // Longitude
+            $table->string('image')->nullable(); // Assuming each post can have one image, for multiple image use 'post_images' pivot table
             $table->timestamps();
             $table->softDeletes();
         });

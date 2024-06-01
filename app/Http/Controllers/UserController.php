@@ -81,7 +81,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Gate::authorize('delete', $user); //handled by UserPolicy@delete
-        // Logic to delete a
+        // Check if user->photo need to deleted first like in post->image
 
         $user->roles()->detach($user->roles);
         //need also to detach the comments
