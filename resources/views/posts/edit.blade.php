@@ -59,6 +59,17 @@
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
+                {{-- using tagged_users select dropdown --}}
+                <select name="tagged_users[]" id="tagged_users" class="form-control block w-full mt-1" multiple >
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id   }}" {{ $post->taggedUsers->contains($user) ? 'selected' : '' }}>{{ $user->name }}</option>
+                    @endforeach
+                </select>
+
+                @error('tagged_users')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
                         <option value="{{ $privacy->id }}" {{ ($post->privacy_id === $privacy->id) ? 'selected' : '' }}>

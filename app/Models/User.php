@@ -234,6 +234,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * The taggedInPosts that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function taggedInPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class);
+    }
+
+    /**
      * The likedPosts that belong to the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

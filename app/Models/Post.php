@@ -101,6 +101,16 @@ class Post extends Model
     }
 
     /**
+     * The taggedUsers that belong to the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function taggedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
      * Get all of the comments for the Post
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

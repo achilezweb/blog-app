@@ -30,7 +30,8 @@ class PostController extends Controller
 
         $tags = Tag::all(); // Fetch all tags
         $categories = Category::all(); // Fetch all categories
-        return view('posts.index', compact('posts', 'tags', 'categories'));
+        $users = User::all();
+        return view('posts.index', compact('posts', 'tags', 'categories', 'users'));
     }
 
     /**
@@ -58,6 +59,7 @@ class PostController extends Controller
         $post = Post::create($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
+        $post->taggedUsers()->sync($request->tagged_users);
 
         return to_route('posts.index');
     }
@@ -82,7 +84,8 @@ class PostController extends Controller
         Gate::authorize('update', $post); //handled by PostPolicy@update
         $tags = Tag::all(); // Fetch all tags
         $categories = Category::all(); // Fetch all categories
-        return view('posts.edit', compact('post', 'tags', 'categories'));
+        $users = User::all();
+        return view('posts.edit', compact('post', 'tags', 'categories', 'users'));
     }
 
     /**
@@ -100,6 +103,7 @@ class PostController extends Controller
         $post->update($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
+        $post->taggedUsers()->sync($request->tagged_users);
         return to_route('posts.index');
     }
 
