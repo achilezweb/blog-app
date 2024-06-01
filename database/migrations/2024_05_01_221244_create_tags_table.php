@@ -18,6 +18,28 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        //lets insert default tags in table
+        DB::table('tags')->insert([
+            [
+                'name' => 'Tag1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Tag2',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Tag3',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'UnTagged',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+        ]);
     }
 
     /**

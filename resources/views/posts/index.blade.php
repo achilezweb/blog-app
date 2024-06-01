@@ -88,7 +88,7 @@
                     <a href="{{  route('posts.show', $post) }}" class="text-xl font-semibold block text-white">
                         {{ $post->is_pinned ? 'Pinned:' : '' }} {{ $post->id }} {{ $post->title }}
                     </a>
-                    <p class="text-sm text-gray-400">{{ $post->body }}</p>
+                    <p class="text-sm text-gray-400">{!! $post->body !!}</p>
                     <div class="text-white">QR Codes:
                         <img src="{{ asset('storage/' . $post->qrcodes ) }}" alt="User QR Code" width="100"><br>
                         <img src="data:image/png;base64,{{ $post->barcode }}" alt="Post Barcode">

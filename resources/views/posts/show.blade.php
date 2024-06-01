@@ -8,7 +8,7 @@
         <h1 class="text-2xl font-semibold block text-white">Posts:</h1>
 
         <div class="text-xl font-semibold block text-white">{{ $post->id }} {{ $post->title }}</div>
-        <p class="text-sm text-gray-400">{{ $post->body }}</p>
+        <p class="text-sm text-gray-400">{!! $post->body !!}</p>
         <div class="text-white">QR Codes:
             <img src="{{ asset('storage/' . $post->qrcodes ) }}" alt="User QR Code" width="100"><br>
             <img src="data:image/png;base64,{{ $post->barcode }}" alt="Post Barcode">
@@ -38,7 +38,7 @@
             </form>
             <p>{{ $post->shareCount() }} shares</p>
         </div>
-        <p class="text-sm text-gray-400">{{ $post->body }}</p>
+        <p class="text-sm text-gray-400">{!! $post->body !!}</p>
         @if ($post->tags)
             <div class="text-white">Tag:</div>
             <ul>

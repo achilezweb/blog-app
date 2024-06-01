@@ -51,6 +51,12 @@ class DatabaseSeeder extends Seeder
         $roles = Role::where('name', 'user')->first()->id;
         $user->roles()->attach($roles);
 
+        //refactor using this
+        // $this->call([
+        //     CategorySeeder::class,
+
+        // ]);
+
         // Call the CategorySeeder
         $this->call(CategorySeeder::class);
 

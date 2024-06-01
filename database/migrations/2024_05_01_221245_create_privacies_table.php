@@ -17,6 +17,38 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
         });
+
+        //lets insert default categories in table
+        DB::table('privacies')->insert([
+            [
+                'name' => 'Public',
+                'description' => 'Public Description1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Friends',
+                'description' => 'Friends Description2',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Only Me',
+                'description' => 'Only Me Description3',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Custom',
+                'description' => 'Custom Description4',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Others',
+                'description' => 'Others Description',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+        ]);
+
     }
 
     /**

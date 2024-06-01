@@ -22,7 +22,7 @@ class TagSeeder extends Seeder
         ];
 
         foreach ($tags as $tag) {
-            Tag::create(['name' => $tag]);
+            //Tag::create(['name' => $tag]); //no longer needed, seeded in the migration
         }
     }
 }

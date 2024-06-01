@@ -22,7 +22,7 @@ class PrivacySeeder extends Seeder
         ];
 
         foreach ($privacies as $privacy) {
-            Privacy::create($privacy);
+            //Privacy::create($privacy); //no longer needed, seeded in the migration
         }
     }
 }

@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($roles as $role) {
-            Role::create($role);
+            // Role::create($role); //no longer needed, seeded in the migration
         }
     }
 }

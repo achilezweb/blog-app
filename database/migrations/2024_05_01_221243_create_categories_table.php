@@ -19,6 +19,37 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        //lets insert default categories in table
+        DB::table('categories')->insert([
+            [
+                'name' => 'Category1',
+                'description' => 'Description1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Category2',
+                'description' => 'Description2',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Category3',
+                'description' => 'Description3',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'Category4',
+                'description' => 'Description4',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],[
+                'name' => 'UnCategorized',
+                'description' => 'UnCategorized',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+        ]);
     }
 
     /**

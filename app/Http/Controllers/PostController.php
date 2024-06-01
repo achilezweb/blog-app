@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Tag;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -19,6 +20,8 @@ class PostController extends Controller
     {
         // $posts = Post::latest()->with('user')->with('category')->paginate(10);
         // $posts = Post::latest()->with('user')->paginate(10);
+
+        // $posts = auth()->user()->posts()->orderBy('is_pinned', 'desc')->orderBy('created_at', 'desc')->paginate(10); //if displaying your own post
 
         // Fetch posts, prioritizing pinned posts
         $posts = Post::orderBy('is_pinned', 'desc') // Pinned posts first
@@ -48,6 +51,9 @@ class PostController extends Controller
 
         // Add user_id to the validated data
         $validatedData['user_id'] = $request->user()->id;
+
+        // Parse mentions in the post body
+        $validatedData['body'] = $this->parseMentions($validatedData['body']);
 
         $post = Post::create($validatedData);
         $post->tags()->sync($request->tags); //best compared to attach
@@ -95,6 +101,27 @@ class PostController extends Controller
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
         return to_route('posts.index');
+    }
+
+    /**
+     * Parse @mentions in the text and convert them to links.
+     *
+     * @param string $body
+     * @return string
+     */
+    protected function parseMentions($body)
+    {
+        preg_match_all('/@([\w.-]+)/', $body, $matches);
+        $usernames = $matches[1];
+
+        $users = User::whereIn('username', $usernames)->get();
+
+        foreach ($users as $user) {
+            $link = "<a href='" . route('users.show', $user->id) . "'>@$user->username</a>";
+            $body = str_replace("@$user->username", $link, $body);
+        }
+
+        return $body;
     }
 
     /**
