@@ -33,6 +33,9 @@ class Post extends Model
         'archive',
         'privacy_id',
         'is_pinned',
+        'location_name',
+        'latitude',
+        'longitude',
     ];
 
     // protected $guarded = ['id'];

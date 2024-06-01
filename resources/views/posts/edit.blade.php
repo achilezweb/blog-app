@@ -70,6 +70,10 @@
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
+                <input type="text" placeholder="Enter Location" id="location_name" name="location_name" value="{{ old('location_name') ?? $post->location_name }}">
+                <input type="text" placeholder="Enter Latitude" id="latitude" name="latitude" value="{{ old('latitude') ?? $post->latitude }}">
+                <input type="text" placeholder="Enter Longitude" id="longitude" name="longitude" value="{{ old('longitude') ?? $post->longitude }}">
+
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
                         <option value="{{ $privacy->id }}" {{ ($post->privacy_id === $privacy->id) ? 'selected' : '' }}>

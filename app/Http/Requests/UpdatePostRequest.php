@@ -29,6 +29,9 @@ class UpdatePostRequest extends FormRequest
             'categories' => ['array'],
             'categories.*' => ['exists:categories,id'],
             'privacy_id' => ['string'],
+            'location_name' => ['nullable', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
         ];
     }
 }

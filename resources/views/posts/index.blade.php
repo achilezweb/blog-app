@@ -78,6 +78,10 @@
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
+                <input type="text" placeholder="Enter Location" id="location_name" name="location_name" value="{{ old('location_name') }}">
+                <input type="text" placeholder="Enter Latitude" id="latitude" name="latitude" value="{{ old('latitude') }}">
+                <input type="text" placeholder="Enter Longitude" id="longitude" name="longitude" value="{{ old('longitude') }}">
+
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
                         <option value="{{ $privacy->id }}">{{ $privacy->name }}</option>
@@ -126,6 +130,9 @@
                                 <li><div class="text-white">{{ $taggedUser->name }}</div></li>
                             @endforeach
                         </ul>
+                    @endif
+                    @if($post->location_name)
+                        <p class="text-white">Location: {{ $post->location_name }} ({{ $post->latitude }}, {{ $post->longitude }})</p>
                     @endif
                     <span class="text-sm text-gray-600">
                         Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}

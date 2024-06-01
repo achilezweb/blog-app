@@ -30,6 +30,9 @@ return new class extends Migration
             $table->boolean('is_pinned')->default(false);
             $table->string('qrcodes')->nullable();
             $table->string('barcode')->nullable();
+            $table->string('location_name')->nullable(); // A textual name of the location
+            $table->decimal('latitude', 10, 8)->nullable(); // Latitude
+            $table->decimal('longitude', 11, 8)->nullable(); // Longitude
             $table->timestamps();
             $table->softDeletes();
         });
