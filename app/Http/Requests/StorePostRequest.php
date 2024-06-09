@@ -33,6 +33,7 @@ class StorePostRequest extends FormRequest
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
             'image' => ['nullable', 'image', 'max:2048'], // 2MB Max
+            'media_files.*' => 'file|max:10240', // Allow up to 10MB files
         ];
     }
 }

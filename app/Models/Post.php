@@ -124,6 +124,16 @@ class Post extends Model
         return $this->hasMany(Comment::class); //$comments = $post->comments;
     }
 
+/**
+ * Get all of the media for the Post
+ *
+ * @return \Illuminate\Database\Eloquent\Relations\HasMany
+ */
+public function medias(): HasMany
+{
+    return $this->hasMany(Media::class);
+}
+
     /**
      * The categories that belong to the Post
      *

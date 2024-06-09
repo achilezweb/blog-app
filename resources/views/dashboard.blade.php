@@ -15,7 +15,9 @@
             <a href="{{ route('comment-audit-logs.index') }}">{{ __('Comment Audit Log') }}</a> |
             <a href="{{ route('category-audit-logs.index') }}">{{ __('Category Audit Log') }}</a> |
             <a href="{{ route('tag-audit-logs.index') }}">{{ __('Tag Audit Log') }}</a> |
-            <a href="{{ route('email.index') }}">{{ __('Email') }}</a>
+            <a href="{{ route('chatgpts.index') }}">{{ __('ChatGPT') }}</a> |
+            <a href="{{ route('email.index') }}">{{ __('Email') }}</a> |
+            <a href="/up">{{ __('Health Check') }}</a>
         </h2>
     </x-slot>
 

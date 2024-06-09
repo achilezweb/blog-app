@@ -33,6 +33,9 @@ class UpdatePostRequest extends FormRequest
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
             'image' => ['nullable', 'image', 'max:2048'], // 2MB Max
+            'media_files.*' => 'file|max:10240', // Validation for new media files
+            'remove_media' => 'nullable|array', // IDs of media to remove
+            'remove_media.*' => 'integer|exists:media,id'
         ];
     }
 }

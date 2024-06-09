@@ -76,6 +76,23 @@
                 <input type="file" name="image">
                 <img src="{{ asset('storage/' . $post->image) }}" alt="Current Image" style="width: 100px;">
 
+                <div class="text-white">Multiple Media:</div>
+                <input type="file" name="media_files[]" multiple accept="image/*,video/*">
+                <h3 class="text-white">Existing Media:</h3>
+                @foreach ($post->medias as $media)
+                    <div>
+                        <input type="checkbox" name="remove_media[]" value="{{ $media->id }}">
+                        @if ($media->media_type === 'image')
+                            <img src="{{ Storage::url($media->file_path) }}" alt="Post Image" style="width:100px;">
+                        @else
+                            <video width="160" controls>
+                                <source src="{{ Storage::url($media->file_path) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @endif
+                    </div>
+                @endforeach
+
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
                         <option value="{{ $privacy->id }}" {{ ($post->privacy_id === $privacy->id) ? 'selected' : '' }}>

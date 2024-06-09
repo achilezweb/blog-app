@@ -81,7 +81,9 @@
                 <input type="text" placeholder="Enter Location" id="location_name" name="location_name" value="{{ old('location_name') }}">
                 <input type="text" placeholder="Enter Latitude" id="latitude" name="latitude" value="{{ old('latitude') }}">
                 <input type="text" placeholder="Enter Longitude" id="longitude" name="longitude" value="{{ old('longitude') }}">
+
                 <input type="file" name="image">
+                <div class="text-white"><input type="file" name="media_files[]" multiple accept="image/*,video/*"></div>
 
                 <select name="privacy_id" id="privacy_id" class="form-control">
                     @foreach(App\Models\Privacy::all() as $privacy)
@@ -138,6 +140,19 @@
                     @if ($post->image)
                         <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" style="width:100%;">
                     @endif
+                    <div class="text-white">Multiple Media:</div>
+                    @foreach ($post->medias as $media)
+                        <div>
+                            @if ($media->media_type === 'image')
+                                <img src="{{ Storage::url($media->file_path) }}" alt="Post Image">
+                            @else
+                                <video width="320" height="240" controls>
+                                    <source src="{{ Storage::url($media->file_path) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            @endif
+                        </div>
+                    @endforeach
                     <span class="text-sm text-gray-600">
                         Date: {{ $post->created_at }} | {{ $post->created_at->diffForHumans() }} by <strong>{{ $post->user->name }}</strong> | Privacy: {{ $post->privacy->name }} | Pageviews: {{ $post->page_views }}
                     </span>

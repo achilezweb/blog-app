@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Media;
 
 class PostController extends Controller
 {
@@ -66,6 +67,18 @@ class PostController extends Controller
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
         $post->taggedUsers()->sync($request->tagged_users);
+
+        //check if there's multiple files upload
+        if ($request->hasFile('media_files')) {
+            foreach ($request->file('media_files') as $file) {
+                $path = $file->store('media', 'public');
+                $mediaType = $file->getMimeType();
+                $post->medias()->create([
+                    'file_path' => $path,
+                    'media_type' => strpos($mediaType, 'image/') === 0 ? 'image' : 'video'
+                ]);
+            }
+        }
 
         return to_route('posts.index');
     }
@@ -125,6 +138,32 @@ class PostController extends Controller
         $post->tags()->sync($request->tags); //best compared to attach
         $post->categories()->sync($request->categories); //best compared to attach
         $post->taggedUsers()->sync($request->tagged_users);
+
+        // Handle removal of specified media files
+        if (!empty($validatedData['remove_media'])) {
+            $mediaToRemove = Media::whereIn('id', $validatedData['remove_media'])->get();
+            foreach ($mediaToRemove as $media) {
+                if (Storage::disk('public')->exists($media->file_path)) {
+                    Storage::disk('public')->delete($media->file_path);
+                }
+                // Storage::delete($media->file_path); // Delete file from storage
+                $media->delete(); // Delete record from database
+            }
+        }
+
+        // Handle new media file uploads
+        if ($request->hasFile('media_files')) {
+            foreach ($request->file('media_files') as $file) {
+                $path = $file->store('media', 'public');
+                $mediaType = $file->getMimeType();
+                $post->medias()->create([
+                    'file_path' => $path,
+                    'media_type' => strpos($mediaType, 'image/') === 0 ? 'image' : 'video'
+                ]);
+            }
+        }
+
+
         return to_route('posts.index');
     }
 
@@ -140,6 +179,14 @@ class PostController extends Controller
             if (Storage::disk('public')->exists($post->image)) {
                 Storage::disk('public')->delete($post->image);
             }
+        }
+
+        // First, handle the deletion of associated media files
+        foreach ($post->medias as $media) {
+            if (Storage::disk('public')->exists($media->file_path)) {
+                Storage::disk('public')->delete($media->file_path);
+            }
+            $media->delete(); // Delete the media record
         }
 
         $post->delete();

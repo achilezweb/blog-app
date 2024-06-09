@@ -55,6 +55,25 @@
                 @endforeach
             </ul>
         @endif
+        @if($post->location_name)
+            <p class="text-white">Location: {{ $post->location_name }} ({{ $post->latitude }}, {{ $post->longitude }})</p>
+        @endif
+        @if ($post->image)
+            <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" style="width:100%;">
+        @endif
+        <div class="text-white">Multiple Media:</div>
+        @foreach ($post->medias as $media)
+            <div>
+                @if ($media->media_type === 'image')
+                    <img src="{{ Storage::url($media->file_path) }}" alt="Post Image">
+                @else
+                    <video width="320" height="240" controls>
+                        <source src="{{ Storage::url($media->file_path) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                @endif
+            </div>
+        @endforeach
         <h2 id="comments" class="font-semibold text-xl text-white leading-tight py-6">Comments:</h2>
 
         @auth
