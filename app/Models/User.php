@@ -263,4 +263,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Post::class, 'post_user_shares');
     }
 
+    public function friendRequestsReceived()
+    {
+        return $this->hasMany(FriendRequest::class, 'friend_id');
+    }
+
+    public function friendRequestsSent()
+    {
+        return $this->hasMany(FriendRequest::class, 'user_id');
+    }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friend_requests', 'user_id', 'friend_id');
+    }
+
+    public function addFriend(User $user)
+    {
+        $this->friends()->attach($user->id);
+    }
+
 }

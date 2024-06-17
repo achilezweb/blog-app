@@ -129,4 +129,13 @@ class UserController extends Controller
         return redirect()->route('users.deleted')->with('success', 'User restored successfully.');
     }
 
+    public function profile($username)
+    {
+        $user = User::with(['posts', 'friends', 'friendRequestsReceived', 'friendRequestsSent'])
+                    ->where('username', $username)
+                    ->firstOrFail();
+
+        return view('profile.profile', compact('user'));
+    }
+
 }

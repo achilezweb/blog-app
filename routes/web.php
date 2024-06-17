@@ -18,7 +18,8 @@ use App\Http\Controllers\CommentAuditLogController;
 use App\Jobs\SendEmailJob;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\UserController;
-// use App\Http\Controllers\ChatgptController;
+use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\ChatgptController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +50,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('posts.share');
     Route::post('/posts/{post}/pin', [PostController::class, 'pin'])->name('posts.pin');
     Route::post('/posts/{post}/unpin', [PostController::class, 'unpin'])->name('posts.unpin');
+
+    Route::post('/friends/request', [FriendRequestController::class, 'sendRequest'])->name('friends.sendRequest');
+    Route::post('/friends/accept/{friendRequest}', [FriendRequestController::class, 'acceptRequest'])->name('friends.acceptRequest');
+    Route::get('/profile/{username}', [UserController::class, 'profile'])->name('users.profile');
 });
 
 // auth, verified, admin, superadmin endpoints
@@ -112,7 +117,7 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
         ->name('tag-audit-logs.index');
 
-    // Route::resource('chatgpts', ChatgptController::class);
+    Route::resource('chatgpts', ChatgptController::class);
 
     Route::resource('email', EmailController::class);
 
