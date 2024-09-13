@@ -107,6 +107,8 @@ services:
         environment:
             - PMA_HOST=mysql
             - PMA_PORT=3306
+            - UPLOAD_LIMIT=750M
+            - MAX_EXECUTION_TIME=5000
         ports:
             - '${FORWARD_PHPMYADMIN_PORT:-8001}:80'
         networks:
