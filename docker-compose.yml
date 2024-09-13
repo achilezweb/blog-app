@@ -111,6 +111,8 @@ services:
             - MAX_EXECUTION_TIME=5000
         ports:
             - '${FORWARD_PHPMYADMIN_PORT:-8001}:80'
+        volumes:
+            - ./settings/phpmyadmin/config.inc.php:/etc/phpmyadmin/config.inc.php
         networks:
             - sail
 networks:
