@@ -283,4 +283,24 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->friends()->attach($user->id);
     }
 
+    /**
+     * Get all of the chatgpts for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chatgpts(): HasMany
+    {
+        return $this->hasMany(Chatgpt::class); //$chatgpts = $user->chatgpts;
+    }
+
+    /**
+     * Get all of the channels for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function channels(): HasMany
+    {
+        return $this->hasMany(Channel::class); //$channels = $user->channels;
+    }
+
 }

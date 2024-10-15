@@ -1,25 +1,26 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\RoleUserController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\CategoryAuditLogController;
-use App\Http\Controllers\CategoryPostController;
-use App\Http\Controllers\PrivacyController;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\TagAuditLogController;
-use App\Http\Controllers\TagPostController;
-use App\Http\Controllers\PostAuditLogController;
-use App\Http\Controllers\CommentAuditLogController;
 use App\Jobs\SendEmailJob;
-use App\Http\Controllers\EmailController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\ChatgptController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TagPostController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\TagAuditLogController;
+use App\Http\Controllers\CategoryPostController;
+use App\Http\Controllers\PostAuditLogController;
+use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\CommentAuditLogController;
+use App\Http\Controllers\CategoryAuditLogController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -117,7 +118,12 @@ Route::middleware(['auth', 'verified', 'role:admin,superadmin'])->group(function
     Route::get('/tag-audit-logs', [TagAuditLogController::class, 'index'])
         ->name('tag-audit-logs.index');
 
+    Route::get('/chatgpts/search', [ChatgptController::class, 'search'])->name('chatgpts.search');
     Route::resource('chatgpts', ChatgptController::class);
+
+    Route::get('/channels/search', [ChannelController::class, 'search'])->name('channels.search');
+    Route::resource('channels', ChannelController::class);
+    // Route::resource('chatgpts.channels', ChannelController::class);
 
     Route::resource('email', EmailController::class);
 
