@@ -19,7 +19,7 @@ services:
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - '.:/var/www/html'
-            - './settings/ssh:/home/sail/.ssh'
+            - '/home/archie/.ssh:/home/sail/.ssh'
         networks:
             - sail
         depends_on:
